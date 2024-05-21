@@ -30,7 +30,7 @@ class ConfigFuncionario():
          print('')
          print(Fore.BLUE + "----- Menu Principal -----")
          print('1. Minha Conta')
-         print('2. Editar Livros')
+         print('2. Configurar Livros')
          print('3. Catálogo de Livros')
          print('4. Dashboard')
          print('0. Sair')

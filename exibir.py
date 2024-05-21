@@ -12,12 +12,10 @@ class ExibirInfo:
       usuarios = self.cur.fetchall()
       conn.commit()
       self.usuario = usuarios
+      return self.usuario
     except KeyError as e:
       print('Error' + e)
-      self.usuario = False
-    finally:
-      self.cur.close()
-      conn.close()
-      return self.usuario
+      return False
+
 
 

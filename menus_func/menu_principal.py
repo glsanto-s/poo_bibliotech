@@ -7,7 +7,7 @@ import menus_func.menu_livro
 init(autoreset=True)
 
 def exibir_menu_principal():
-    print(Fore.YELLOW + "----- Editar Livros -----")
+    print(Fore.YELLOW + "----- Configurar Livros -----")
     print("1. Livros")
     print("2. Autores")
     print("3. Editores")

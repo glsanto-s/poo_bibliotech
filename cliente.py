@@ -1,5 +1,7 @@
 from colorama import init, Fore, Style
 import exibir
+import catalogo
+
 
 # Inicializar colorama para suportar cores no terminal
 init(autoreset=True)
@@ -41,8 +43,8 @@ class Cliente():
                   break
                
          elif opcao == '2':
-            print('')
-         #   exibirLivros
+            catalogo.Catalogo()
+
          
          elif opcao == '3':
              print(Fore.LIGHTYELLOW_EX + 'Opção ainda não configurada!')

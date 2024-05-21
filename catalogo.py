@@ -38,7 +38,7 @@ class Catalogo():
     
   def exibir_livros(self, opcaoCerta = False):
     self.cur = conn.cursor()
-    print(Fore.YELLOW + "----- Selecionar livros por -----")
+    print(Fore.YELLOW + "----- Selecionar Livros por -----")
     if opcaoCerta:
       opcao = opcaoCerta
     else:
@@ -125,11 +125,102 @@ class Catalogo():
       self.exibir_livros(voltar)
         
 
-  def exibir_autores(self):
-    print('Opção ainda não configurada!')
+  def exibir_autores(self, opcaoCerta = False):
+    self.cur = conn.cursor()
+    print(Fore.YELLOW + "----- Selecionar Autores por -----")
+    if opcaoCerta:
+      opcao = opcaoCerta
+    else:
+      print("1. Nome do autor")
+      print("2. Todos os autores")
+      opcao = input('Escolha uma opção: ')
+      
+    if opcao == '1':
+      try:
+        nome = input('Digite o nome do autor: ')
+        self.cur.execute(f"""SELECT nome   
+                         FROM autor             
+                    WHERE nome = '{nome}'""")
+        autores = self.cur.fetchall()
+        conn.commit()
+        if(autores and len(autores) != 0):
+          for autor in autores:
+            print('')
+            print('------')
+            print(f'Nome do Autor: {autor[0]}')
+        else:
+          print('Não existe esse autor.')
+          self.exibir_catalogo() 
+      except KeyError as e:
+         print('Error' + e)
+    elif opcao == '2':
+      try:
+        self.cur.execute(f"""SELECT nome   
+                         FROM autor""")
+        autores = self.cur.fetchall()
+        conn.commit()
+        if(autores and len(autores) != 0):
+          for autor in autores:
+            print('')
+            print('------')
+            print(f'Nome do Autor: {autor[0]}')
+        else:
+          print('Não existe esse autor.')
+          self.exibir_catalogo() 
+      except KeyError as e:
+         print('Error' + e)
+    else:    
+      voltar = input('Escolha uma opção válida: ')
+      self.exibir_livros(voltar) 
 
-  def exibir_editoras(self):
-    print('Opção ainda não configurada!')
+  def exibir_editoras(self, opcaoCerta = False):
+    self.cur = conn.cursor()
+    print(Fore.YELLOW + "----- Selecionar Editoras por -----")
+    if opcaoCerta:
+      opcao = opcaoCerta
+    else:
+      print("1. Nome da editora")
+      print("2. Todas as editoras")
+      opcao = input('Escolha uma opção: ')
+      
+    if opcao == '1':
+      try:
+        nome = input('Digite o nome da editora: ')
+        self.cur.execute(f"""SELECT nome   
+                         FROM editora             
+                    WHERE nome = '{nome}'""")
+        editoras = self.cur.fetchall()
+        conn.commit()
+        if(editoras and len(editoras) != 0):
+          for editora in editoras:
+            print('')
+            print('------')
+            print(f'Nome da Editora: {editora[0]}')
+        else:
+          print('Não existe essa editora.')
+          self.exibir_catalogo() 
+      except KeyError as e:
+         print('Error' + e)
+    elif opcao == '2':
+      try:
+        self.cur.execute(f"""SELECT nome   
+                         FROM editora""")
+        editoras = self.cur.fetchall()
+        conn.commit()
+        if(editoras and len(editoras) != 0):
+          for editora in editoras:
+            print('')
+            print('------')
+            print(f'Nome da Editora: {editora[0]}')
+        else:
+          print('Não existe essa editora.')
+          self.exibir_catalogo() 
+      except KeyError as e:
+         print('Error' + e)
+    else:    
+      voltar = input('Escolha uma opção válida: ')
+      self.exibir_livros(voltar) 
+
 
 
 
