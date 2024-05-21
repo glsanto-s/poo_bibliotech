@@ -22,7 +22,7 @@ def adicionar_editora():
     idEditora_res = addEditora.procurar(addEditora.nome)
     
     if idEditora_res == "sem cadastro":
-        print(Fore.GREEN + "\nAdicionando um novo autor...")
+        print(Fore.GREEN + "\nAdicionando um nova editora...")
         res = addEditora.adicionar(addEditora.nome)
     else:
         res = "Editora já cadastrada!"

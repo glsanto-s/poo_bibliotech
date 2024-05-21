@@ -37,9 +37,6 @@ class Base():
         except KeyError as e:
             conection.rollback()
             print("Erro ao executar a consulta:", e)
-        finally:
-            cursor.close()
-            conection.close()
     
     def alterar(self, id, **dic):
         for chave in dic.keys():
@@ -64,10 +61,6 @@ class Base():
             except KeyError as e:
                 conection.rollback()
                 print("Erro ao executar a consulta:", e)
-
-            finally:
-                cursor.close()
-                conection.close()
     
     def excluir(self, id):
         campoId = f'id_{self.tabela}'
@@ -88,9 +81,28 @@ class Base():
             conection.rollback()
             print("Erro ao executar a consulta:", e)
 
-        finally:
-            cursor.close()
-            conection.close()
+    def procurar(self, campo, valor):  
+        conection = None
+        cursor = None
+        try:
+            conection = conn
+            cursor = conection.cursor()
+            query = f"SELECT * FROM {self.tabela} WHERE {campo} LIKE '%{valor}%'"
+            cursor.execute(query)
+
+            res = cursor.fetchone()
+            if res:
+                print("Consulta bem-sucedida!")
+                id = res[0]
+            else:
+                print(f"Nenhum resultado encontrado para o {campo}:", valor)
+                id = "sem cadastro"
+
+            conection.commit()
+            return id
+        except KeyError as e:
+            conection.rollback()
+            print("Erro ao executar a consulta:", e)
 
 
 class Livro(Base):
@@ -115,7 +127,8 @@ class LivroDigital(Base):
         super().__init__('livro_digital', ['id_livro','tamanho','versao','formato'])
 
 class LivroFisico(Base):
-    def __init__(self, quantidade, id_livro):
+    def __init__(self, quantidade, id_livro,id):
+        self.id = id
         self.quantidade = quantidade
         self.id_livro = id_livro
 
@@ -127,61 +140,8 @@ class Editora(Base):
         self.nome = nome
         super().__init__('editora',['nome'])
 
-    def procurar(self, nome):
-        conection = None
-        cursor = None
-        try:
-            conection = conn
-            cursor = conection.cursor()
-            query = f"SELECT id_editora FROM {self.tabela} WHERE nome LIKE '%{nome}%'"
-            cursor.execute(query)
-
-            res = cursor.fetchone()
-            if res:
-                print("Consulta bem-sucedida!")
-                id = res[0]
-            else:
-                print("Nenhum resultado encontrado para o nome:", nome)
-                id = "sem cadastro"
-
-            conection.commit()
-            return id
-        except KeyError as e:
-            conection.rollback()
-            print("Erro ao executar a consulta:", e)
-        finally:
-            cursor.close()
-            conection.close()
-
 class Autor(Base):
     def __init__(self, id, nome):
         self.id = id
         self.nome = nome
         super().__init__('autor',['nome'])
-    
-    def procurar(self, nome):
-        conection = None
-        cursor = None
-        try:
-            conection = conn
-            cursor = conection.cursor()
-            query = f"SELECT * FROM {self.tabela} WHERE nome LIKE '%{nome}%'"
-            cursor.execute(query)
-
-            res = cursor.fetchone()
-            if res:
-                print("Consulta bem-sucedida!")
-                id = res[0]
-            else:
-                print("Nenhum resultado encontrado para o nome:", nome)
-                id = "sem cadastro"
-
-            conection.commit()
-            return id
-        except KeyError as e:
-            conection.rollback()
-            print("Erro ao executar a consulta:", e)
-        finally:
-            cursor.close()
-            conection.close()
-

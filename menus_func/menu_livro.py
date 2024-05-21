@@ -23,13 +23,13 @@ def adicionar_livro():
         id=None,
         nome = autor
     )
-    idAutor_res = idAutor.procurar(autor)
+    idAutor_res = idAutor.procurar('nome',autor)
 
     idEditora = acoes_funcionario.Editora(
         id=None,
         nome = editora
     )
-    idEditora_res = idEditora.procurar(editora)
+    idEditora_res = idEditora.procurar('nome',editora)
 
     addLivro = acoes_funcionario.Livro( 
         id= None, 
@@ -42,6 +42,38 @@ def adicionar_livro():
     
     print(Fore.GREEN + "\nAdicionando um novo livro...")
     res = addLivro.adicionar(addLivro.titulo, addLivro.idAutor, addLivro.idEditora, addLivro.categoria, addLivro.isbn, addLivro.dataPublicacao)
+
+
+    print('Qual tipo de livro você está cadastrando?')
+    print('1. Físico')
+    print('2. Digital')
+    opcao= input('Digite a opção: ')
+
+    pkLivro = addLivro.procurar('titulo', addLivro.titulo)
+    if opcao == '1':
+        qtd = livro_fisico()
+        livroFisico= acoes_funcionario.LivroFisico(
+            quantidade = qtd,
+            id = None,
+            id_livro = pkLivro
+        )
+        rsp= livroFisico.adicionar(livroFisico.id_livro, livroFisico.quantidade)
+        print (rsp)
+
+    elif opcao == '2':
+        obj = livro_digital()
+        livroDigital= acoes_funcionario.LivroDigital(
+            tamanho = obj['tamanho'],
+            versao = obj['versao'],
+            formato = obj['formato'],
+            id = None,
+            id_livro = pkLivro
+        )
+        rsp = livroDigital.adicionar(livroDigital.tamanho, livroDigital.versao, livroDigital.formato, livroDigital.id_livro)
+        print  (rsp)
+    else:
+        print('Opção Incorreta')
+        opcao= input('Digite a opção: ')
 
     print(res)
 
@@ -91,3 +123,19 @@ def remover_chaves_vazias(dicionario):
     chaves_para_remover = [chave for chave, valor in dicionario.items() if not valor]
     for chave in chaves_para_remover:
         del dicionario[chave]
+
+def livro_fisico():
+    qtd= input('Quantidade: ')
+    return qtd
+
+def livro_digital():
+    tamanho= input('Tamanho: ')
+    versao = input('Versao: ')
+    formato= input('Formato: ')
+
+    obj_digital = {
+        "tamanho": tamanho,
+        "versao": versao,
+        "formato": formato
+    }
+    return obj_digital
