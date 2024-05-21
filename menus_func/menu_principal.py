@@ -7,11 +7,11 @@ import menus_func.menu_livro
 init(autoreset=True)
 
 def exibir_menu_principal():
-    print(Fore.YELLOW + "----- Catálogo -----")
+    print(Fore.YELLOW + "----- Editar Livros -----")
     print("1. Livros")
     print("2. Autores")
     print("3. Editores")
-    print("0. Menu Princial")
+    print("0. Menu Principal")
 
 def main():
     while True:
