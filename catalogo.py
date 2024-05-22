@@ -50,56 +50,60 @@ class Catalogo():
     if opcao == '1':
       try:
         titulo = input('Digite o titulo do livro: ')
-        self.cur.execute(f"""SELECT L.titulo, L.categoria, L.data_publicacao, E.nome AS Editora, A.nome as Autor 
+        self.cur.execute(f"""SELECT L.id_livro, L.titulo, L.categoria, L.data_publicacao, E.nome AS Editora, A.nome as Autor 
                     FROM livro AS L
                     INNER JOIN editora AS E on E.id_editora = L.id_editora
                     INNER JOIN autor AS A on A.id_autor = L.id_autor
-                    WHERE L.titulo = '{titulo}'""")
+                    WHERE L.titulo LIKE '%{titulo}%'""")
         livros = self.cur.fetchall()
         conn.commit()
         if(livros and len(livros) != 0):
           for livro in livros:
             print('')
             print('------')
-            print(f'Título: {livro[0]}')
-            print(f'Categoria: {livro[1]}')
-            print(f'Data de publicação: {livro[2]}')
-            print(f'Editora: {livro[3]}')
-            print(f'Autor: {livro[4]}')
+            print(Fore.LIGHTCYAN_EX + f'ID: {livro[0]}')
+            print(f'Título: {livro[1]}')
+            print(f'Categoria: {livro[2]}')
+            print(f'Data de publicação: {livro[3]}')
+            print(f'Editora: {livro[4]}')
+            print(f'Autor: {livro[5]}')
+          self.exibir_catalogo() 
         else:
-          print('Não existe esse livro.')
+          print(Fore.RED+'Não existe esse livro.')
           self.exibir_catalogo() 
       except KeyError as e:
-         print('Error' + e)
+         print(Fore.RED+'Error' + e)
 
     elif opcao == '2':
       try:
         categoria = input('Digite a categoria do livro: ')
-        self.cur.execute(f"""SELECT L.titulo, L.categoria, L.data_publicacao, E.nome AS Editora, A.nome as Autor 
+        self.cur.execute(f"""SELECT L.id_livro, L.titulo, L.categoria, L.data_publicacao, E.nome AS Editora, A.nome as Autor 
                     FROM livro AS L
                     INNER JOIN editora AS E on E.id_editora = L.id_editora
                     INNER JOIN autor AS A on A.id_autor = L.id_autor
-                    WHERE L.categoria = '{categoria}'""")
+                    WHERE L.categoria LIKE '%{categoria}%'""")
         livros = self.cur.fetchall()
         conn.commit()
         if(livros and len(livros) != 0):
           for livro in livros:
             print('')
             print('------')
-            print(f'Categoria: {livro[1]}')
-            print(f'Título: {livro[0]}')
-            print(f'Data de publicação: {livro[2]}')
-            print(f'Editora: {livro[3]}')
-            print(f'Autor: {livro[4]}')
+            print(f'Categoria: {livro[2]}')
+            print(Fore.LIGHTCYAN_EX +f'ID: {livro[0]}')
+            print(f'Título: {livro[1]}')
+            print(f'Data de publicação: {livro[3]}')
+            print(f'Editora: {livro[4]}')
+            print(f'Autor: {livro[5]}')
+          self.exibir_catalogo() 
         else:
-          print('Não existe essa categoria.')
+          print(Fore.RED+'Não existe essa categoria.')
           self.exibir_catalogo() 
       except KeyError as e:
          print('Error' + e)
 
     elif opcao == '3':
       try:
-        self.cur.execute(f"""SELECT L.titulo, L.categoria, L.data_publicacao, E.nome AS Editora, A.nome as Autor 
+        self.cur.execute(f"""SELECT L.id_livro, L.titulo, L.categoria, L.data_publicacao, E.nome AS Editora, A.nome as Autor 
                     FROM livro AS L
                     INNER JOIN editora AS E on E.id_editora = L.id_editora
                     INNER JOIN autor AS A on A.id_autor = L.id_autor""")
@@ -109,13 +113,15 @@ class Catalogo():
           for livro in livros:
             print('')
             print('------')
-            print(f'Título: {livro[0]}')
-            print(f'Categoria: {livro[1]}')
-            print(f'Data de publicação: {livro[2]}')
-            print(f'Editora: {livro[3]}')
-            print(f'Autor: {livro[4]}')
+            print(Fore.LIGHTCYAN_EX +f'ID: {livro[0]}')
+            print(f'Título: {livro[1]}')
+            print(f'Categoria: {livro[2]}')
+            print(f'Data de publicação: {livro[3]}')
+            print(f'Editora: {livro[4]}')
+            print(f'Autor: {livro[5]}')
+          self.exibir_catalogo() 
         else:
-          print('Não existem livros.')
+          print(Fore.RED+'Não existem livros.')
           self.exibir_catalogo() 
       except KeyError as e:
          print('Error' + e)
@@ -138,24 +144,26 @@ class Catalogo():
     if opcao == '1':
       try:
         nome = input('Digite o nome do autor: ')
-        self.cur.execute(f"""SELECT nome   
+        self.cur.execute(f"""SELECT id_autor, nome   
                          FROM autor             
-                    WHERE nome = '{nome}'""")
+                    WHERE nome LIKE '%{nome}%'""")
         autores = self.cur.fetchall()
         conn.commit()
         if(autores and len(autores) != 0):
           for autor in autores:
             print('')
             print('------')
-            print(f'Nome do Autor: {autor[0]}')
+            print(Fore.LIGHTCYAN_EX + f'ID: {autor[0]}')
+            print(f'Nome do Autor: {autor[1]}')
+          self.exibir_catalogo() 
         else:
-          print('Não existe esse autor.')
+          print(Fore.RED+'Não existe esse autor.')
           self.exibir_catalogo() 
       except KeyError as e:
          print('Error' + e)
     elif opcao == '2':
       try:
-        self.cur.execute(f"""SELECT nome   
+        self.cur.execute(f"""SELECT id_autor, nome   
                          FROM autor""")
         autores = self.cur.fetchall()
         conn.commit()
@@ -163,9 +171,11 @@ class Catalogo():
           for autor in autores:
             print('')
             print('------')
-            print(f'Nome do Autor: {autor[0]}')
+            print(Fore.LIGHTCYAN_EX + f'ID: {autor[0]}')
+            print(f'Nome do Autor: {autor[1]}')
+          self.exibir_catalogo() 
         else:
-          print('Não existe esse autor.')
+          print(Fore.RED+'Não existe esse autor.')
           self.exibir_catalogo() 
       except KeyError as e:
          print('Error' + e)
@@ -186,7 +196,7 @@ class Catalogo():
     if opcao == '1':
       try:
         nome = input('Digite o nome da editora: ')
-        self.cur.execute(f"""SELECT nome   
+        self.cur.execute(f"""SELECT id_editora, nome   
                          FROM editora             
                     WHERE nome = '{nome}'""")
         editoras = self.cur.fetchall()
@@ -195,15 +205,17 @@ class Catalogo():
           for editora in editoras:
             print('')
             print('------')
-            print(f'Nome da Editora: {editora[0]}')
+            print(Fore.LIGHTCYAN_EX + f'ID: {editora[0]}')
+            print(f'Nome da Editora: {editora[1]}')
+          self.exibir_catalogo() 
         else:
-          print('Não existe essa editora.')
+          print(Fore.RED+'Não existe essa editora.')
           self.exibir_catalogo() 
       except KeyError as e:
          print('Error' + e)
     elif opcao == '2':
       try:
-        self.cur.execute(f"""SELECT nome   
+        self.cur.execute(f"""SELECT id_editora, nome   
                          FROM editora""")
         editoras = self.cur.fetchall()
         conn.commit()
@@ -211,9 +223,11 @@ class Catalogo():
           for editora in editoras:
             print('')
             print('------')
-            print(f'Nome da Editora: {editora[0]}')
+            print(Fore.LIGHTCYAN_EX + f'ID: {editora[0]}')
+            print(f'Nome da Editora: {editora[1]}')
+          self.exibir_catalogo() 
         else:
-          print('Não existe essa editora.')
+          print(Fore.RED+'Não existe essa editora.')
           self.exibir_catalogo() 
       except KeyError as e:
          print('Error' + e)
