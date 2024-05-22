@@ -1,16 +1,11 @@
 from conexao import conn
 from colorama import init, Fore, Style
 
-
-
 class Catalogo():
   def __init__(self):
     self.cur = conn.cursor()
-
-
     self.exibir_catalogo()
-    
-    
+       
   def exibir_catalogo(self, opcaoCerta = False):
 
     if opcaoCerta:
@@ -34,8 +29,7 @@ class Catalogo():
     else:
       voltar = input('Escolha uma opção válida: ')
       self.exibir_catalogo(voltar) 
-    
-    
+       
   def exibir_livros(self, opcaoCerta = False):
     self.cur = conn.cursor()
     if opcaoCerta:
@@ -130,7 +124,6 @@ class Catalogo():
       voltar = input('Escolha uma opção válida: ')
       self.exibir_livros(voltar)
         
-
   def exibir_autores(self, opcaoCerta = False):
     self.cur = conn.cursor()
     if opcaoCerta:
