@@ -2,7 +2,6 @@ from colorama import init, Fore
 init(autoreset=True)
 
 from usuario import *
-import funcionario
 
 
 
@@ -10,7 +9,7 @@ class Telas:
     def __init__(self):
        self.user = Usuario() 
        self.cliente = Cliente()
-       self.func = funcionario.ConfigFuncionario()
+       self.func = Funcionario()
     
     def login(self):    
         print(Fore.LIGHTMAGENTA_EX+'''
