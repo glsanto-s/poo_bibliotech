@@ -35,7 +35,11 @@ Realize seu Login!
         senha = str(input('Senha: '))
 
         validacao_login = self.user.logar(email, senha)
-        idUsuario = validacao_login["id"] 
+        idUsuario = validacao_login["id"]
+        if validacao_login["status"] == True:
+            self.login()
+        elif validacao_login["status"] == False:
+            self.tela_principal() 
         if  idUsuario != None:
             validacao_login = validacao_login["adm"]
             if validacao_login == "1":
