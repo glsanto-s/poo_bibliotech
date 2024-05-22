@@ -8,7 +8,7 @@ class ExibirInfo:
      
   def exibir(self):
     try:
-      self.cur.execute(f"""SELECT nome, cpf, email, data_nascimento, telefone, senha, adm FROM usuario WHERE id_usuario = '{self.idUsuario}'""")
+      self.cur.execute(f"""SELECT nome, cpf, email, data_nascimento, telefone FROM usuario WHERE id_usuario = '{self.idUsuario}'""")
       usuarios = self.cur.fetchall()
       conn.commit()
       self.usuario = usuarios
