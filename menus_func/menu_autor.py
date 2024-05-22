@@ -18,39 +18,51 @@ def adicionar_autor():
         id=None,
         nome = autor
     )
-    idAutor_res = addAutor.procurar(addAutor.nome)
-    
-    if idAutor_res == "sem cadastro":
+    pesquisa = addAutor.procurar('nome',addAutor.nome)
+    if pesquisa == "sem registro": 
         print(Fore.GREEN + "\nAdicionando um novo autor...")
-        res = addAutor.adicionar(addAutor.nome)
+        addAutor.adicionar(addAutor.nome)
     else:
-        res = "Autor já cadastrado!"
-    print(res)
-    
-
+        print(Fore.BLUE + "\nAutor já cadastrado!")
 
 def excluir_autor():
-    id = input('Id do autor: ')
+    id = int(input('Id do autor: '))
 
     excluirAutor = Autor(
         id=id,
         nome = None
     )
+    pesquisa = excluirAutor.procurar('id_autor',excluirAutor.id)
+    if pesquisa != "sem registro": 
+        print(f'Autor prestes a excluir: {pesquisa[1]}')
+        op = input("Confirmar (S/N)? ")
+        if op == 'S':
+            print(Fore.GREEN + "\nExcluindo autor...")
+            excluirAutor.excluir(excluirAutor.id)
+        else:
+            print(Fore.BLUE + "\nVoltando...")
+    else:
+        print(Fore.RED +'Não foi encontrada nenhum autor com esse id!')
 
-    print(Fore.GREEN + "\nExcluindo autor...")
-    res = excluirAutor.excluir(excluirAutor.id)
-    print(res)
     
 def alterar_autor():
 
-    id = input('Id do autor: ')
+    id = int(input('Id do autor: '))
     autor = input('Nome: ')
 
     alterarAutor = Autor(
         id=id,
         nome = autor
     )
-
-    print(Fore.GREEN + "\nAlterando autor...")
-    res = alterarAutor.alterar(id, nome= alterarAutor.nome)
-    print(res)
+    
+    pesquisa = alterarAutor.procurar('id_autor',alterarAutor.id)
+    if pesquisa != "sem registro": 
+        print(f'Autor prestes a alterar: {pesquisa[1]} para {alterarAutor.nome}')
+        op = input("Confirmar (S/N)? ")
+        if op == 'S':
+            print(Fore.GREEN + "\nAlterando autor...")
+            alterarAutor.alterar(alterarAutor.id, nome= alterarAutor.nome)
+        else:
+            print(Fore.BLUE + "\nVoltando...")
+    else:
+        print(Fore.RED +'Não foi encontrada nenhum autor com esse id!')
