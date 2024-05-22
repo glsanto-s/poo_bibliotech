@@ -16,21 +16,24 @@ class Usuario:
         self.senha = senha
         rows = self.sql_commands.validacao_login(email, senha)
         error_message1 = Fore.RED+'\nUsuário Não Existe!'
-        error_message2 = Fore.RED+'\nCredenciais Inválidas!'
+        error_message2 = Fore.RED+'\nSenha Incorreta!'
         validate_message = Fore.GREEN+"\nLogin Realizado com Sucesso!"
         if rows == []:
             id_message = {
                 "id" : None,
-                "Message": error_message1
+                "message": error_message1,
+                "adm": None,
+                "status": False
             }
-            print(id_message["Message"])
+            print(id_message["message"])
             return id_message
         elif rows[0][0] == senha:
             validacao_user = rows[0][1]
             id_message = {
                     "id" : f"{rows[0][3]}",
                     "message": validate_message,
-                    "adm": f"{validacao_user}"
+                    "adm": f"{validacao_user}",
+                    "status": None
                 }
             if validacao_user == '1':
                 print(id_message["message"])
@@ -42,7 +45,8 @@ class Usuario:
             id_message = {
                 "id" : f"{rows[0][3]}",
                 "message": error_message2,
-                "adm": None
+                "adm": None,
+                "status": True
             }
             print(id_message["message"])
             return id_message

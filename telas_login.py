@@ -35,7 +35,11 @@ Realize seu Login!
         senha = str(input('Senha: '))
 
         validacao_login = self.user.logar(email, senha)
-        idUsuario = validacao_login["id"] 
+        idUsuario = validacao_login["id"]
+        if validacao_login["status"] == True:
+            self.login()
+        elif validacao_login["status"] == False:
+            self.tela_principal() 
         if  idUsuario != None:
             validacao_login = validacao_login["adm"]
             if validacao_login == "1":
@@ -132,7 +136,12 @@ Cadastre-se
                                       self.user.telefone, 
                                       self.user.senha
                                     )
-            print(log)
+            if log != 'Usuário Cadastrado!':
+                print(log)
+                self.tela_principal()
+            else:
+                print(log)
+                self.login()
 
     def cadastro_funcionario(self):
         print('''
@@ -218,8 +227,12 @@ Cadastro de Funcionário
                                       self.user.telefone, 
                                       self.user.senha
                                     )
-            
-            print(log)
+            if log != 'Usuário Cadastrado!':
+                print(log)
+                self.tela_principal()
+            else:
+                print(log)
+                self.login()
 
     def deletar_usuário(self):
         email = str(input('Email: '))
