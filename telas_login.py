@@ -1,15 +1,13 @@
 from colorama import init, Fore
 init(autoreset=True)
-
-from usuario import *
-
-
+from usuario import Usuario, Cliente, Funcionario
 
 class Telas:
     def __init__(self):
        self.user = Usuario() 
        self.cliente = Cliente()
        self.func = Funcionario()
+       self.id_usuario = 0
        self.dados_validados = {
             'nome': False,
             'cpf': False,
@@ -36,6 +34,7 @@ Realize seu Login!
 
         validacao_login = self.user.logar(email, senha)
         idUsuario = validacao_login["id"]
+        self.id_usuario = idUsuario
         if validacao_login["status"] == True:
             self.login()
         elif validacao_login["status"] == False:
@@ -127,8 +126,9 @@ Cadastre-se
             self.user.senha = senha
 
         is_valido = all(self.dados_validados.values())
+        self.reiniciar_validacao()
         
-        if is_valido:    
+        if is_valido:  
             log = self.user.cadastrar(self.user.nome, 
                                       self.user.cpf, 
                                       self.user.email, 
@@ -136,12 +136,13 @@ Cadastre-se
                                       self.user.telefone, 
                                       self.user.senha
                                     )
-            if log != 'Usuário Cadastrado!':
-                print(log)
-                self.tela_principal()
-            else:
-                print(log)
-                self.login()
+            match log:
+                case 'Email já Utilizado!' | 'CPF já Utilizado!':
+                    print(log)
+                    self.tela_principal()
+                case 'Usuário Cadastrado!':
+                    print(log)
+                    self.login()
 
     def cadastro_funcionario(self):
         print('''
@@ -216,8 +217,11 @@ Cadastro de Funcionário
 
             self.dados_validados['senha'] = is_valido
             self.user.senha = senha
+        
+        self.user.adm = "1"
 
         is_valido = all(self.dados_validados.values())
+        self.reiniciar_validacao()
         
         if is_valido:
             log = self.user.cadastrar(self.user.nome, 
@@ -225,16 +229,14 @@ Cadastro de Funcionário
                                       self.user.email, 
                                       self.user.data_nascimento, 
                                       self.user.telefone, 
-                                      self.user.senha
+                                      self.user.senha,
+                                      self.user.adm
                                     )
-            if log != 'Usuário Cadastrado!':
-                print(log)
-                self.tela_principal()
-            else:
-                print(log)
-                self.login()
+            
+            print(log)
+            self.func.exibirMenu(self.id_usuario)
 
-    def deletar_usuário(self):
+    def deletar_usuario(self):
         email = str(input('Email: '))
         print(self.user.deletar(email))
 
@@ -332,6 +334,13 @@ Bibliotech
         """
 
         return f'{data[6:]}-{data[3:5]}-{data[:2]}'
+    
+    def reiniciar_validacao(self):
+        """Após efetuar a validação de dados no cadastro, 
+        remove os dados validados para serem validados novamente em um novo cadastro."""
 
-tela = Telas()
-tela.tela_principal()
+        self.dados_validados = {key: False for key in self.dados_validados}
+
+if __name__ == '__main__':
+    tela = Telas()
+    tela.tela_principal()

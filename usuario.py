@@ -4,7 +4,6 @@ import exibir
 import catalogo 
 from menus_func import menu_principal
 
-
 init(autoreset=True)
 
 class Usuario:
@@ -51,14 +50,15 @@ class Usuario:
             print(id_message["message"])
             return id_message
 
-    def cadastrar(self, nome, cpf, email, data_nascimento, telefone, senha):
+    def cadastrar(self, nome, cpf, email, data_nascimento, telefone, senha, adm="0"):
         self.nome = nome
         self.cpf = cpf
         self.email = email
         self.data_nascimento = data_nascimento
         self.telefone = telefone
         self.senha = senha
-        validacao = self.sql_commands.create_user(nome, cpf, email, data_nascimento, telefone, senha, '0')
+        self.adm = adm
+        validacao = self.sql_commands.create_user(nome, cpf, email, data_nascimento, telefone, senha, adm)
         return validacao
     
     def deletar(self, email):
@@ -70,26 +70,6 @@ class Funcionario(Usuario)  :
         def __init__(self):
             self.funcionario = None 
             super().__init__()
-        
-        def cadastrar_funcionario(self):
-            print('''
------------------------
-Cadastro de Funcionário
------------------------''')
-            nome = str(input('Nome: '))
-            cpf = str(input('CPF: '))
-            email = str(input('Email: '))
-            data_nascimento = str(input('Data de Nascimento: '))
-            telefone = str(input('Telefone: '))
-            senha = str(input('Senha: '))
-            self.nome = nome
-            self.cpf = cpf
-            self.email = email
-            self.data_nascimento = data_nascimento
-            self.telefone = telefone
-            self.senha = senha
-            validacao = self.sql_commands.create_user(nome, cpf, email, data_nascimento, telefone, senha, '1')
-            return validacao
         
         def exibirInfo(self, idUsuario):
             self.funcionario = exibir.ExibirInfo(idUsuario).exibir()
@@ -132,7 +112,8 @@ Cadastro de Funcionário
                     catalogo.Catalogo()
                 elif opcao == '4':
                     print('')
-                    self.cadastrar_funcionario()
+                    from telas_login import Telas
+                    Telas().cadastro_funcionario()
                 elif opcao == '5':
                     print(Fore.LIGHTYELLOW_EX + 'Opção ainda não configurada!')
                 elif opcao == '0':
