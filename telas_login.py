@@ -10,6 +10,14 @@ class Telas:
        self.user = Usuario() 
        self.cliente = Cliente()
        self.func = Funcionario()
+       self.dados_validados = {
+            'nome': False,
+            'cpf': False,
+            'email': False,
+            'data_nascimento': False,
+            'telefone': False,
+            'senha': False
+        }
     
     def login(self):    
         print(Fore.LIGHTMAGENTA_EX+'''
@@ -19,15 +27,12 @@ Realize seu Login!
 ''')
         email = str(input('Email: '))
         is_valido = self.validar(email, 'email')
+
         if not is_valido:
             print('Email inválido. Informe um e-mail válido.')
             self.login()
 
         senha = str(input('Senha: '))
-        is_valido = self.validar(senha, 'senha')
-        if not is_valido:
-            print('Senha inválida. Informe uma senha válida.')
-            self.login()
 
         validacao_login = self.user.logar(email, senha)
         idUsuario = validacao_login["id"] 
@@ -46,52 +51,87 @@ Realize seu Login!
 -----------
 Cadastre-se
 -----------''')
-        nome = str(input('Nome: '))
-        is_valido = self.validar(nome, 'nome')
-
-        if not is_valido:
-            print('Nome inválido.')
-            self.cadastro_cliente()
         
-        cpf = str(input('CPF: '))
-        is_valido = self.validar(cpf, 'cpf')
+        
+        if not self.dados_validados['nome']:
+            nome = str(input('Nome: '))
+            nome = self.converter_nome(nome)
 
-        if not is_valido:
-            print('CPF inválido. Informe um CPF válido.')
-            self.cadastro_cliente()
+            is_valido = self.validar(nome, 'nome')
 
-        email = str(input('Email: '))
-        is_valido = self.validar(email, 'email')
+            if not is_valido:
+                print('Nome inválido.')
+                self.cadastro_cliente()
 
-        if not is_valido:
-            print('Email inválido. Informe um e-mail válido.')
-            self.cadastro_cliente()
+            self.dados_validados['nome'] = is_valido
+            self.user.nome = nome
+        
+        if not self.dados_validados['cpf']:
+            cpf = str(input('CPF: '))
+            is_valido = self.validar(cpf, 'cpf')
 
-        data_nascimento = str(input('Data de Nascimento: '))
-        is_valido = self.validar(data_nascimento, 'data_nascimento')
+            if not is_valido:
+                print('CPF inválido. Informe um CPF válido.')
+                self.cadastro_cliente()
 
-        if not is_valido:
-            print('Data de nascimento inválida. Informe uma data de nascimento válida.')
-            self.cadastro_cliente()
+            self.dados_validados['cpf'] = is_valido
+            self.user.cpf = cpf
 
-        data_nascimento = self.converter_data(data_nascimento)
+        if not self.dados_validados['email']:
+            email = str(input('Email: '))
+            is_valido = self.validar(email, 'email')
 
-        telefone = str(input('Telefone: '))
-        is_valido = self.validar(telefone, 'telefone')
+            if not is_valido:
+                print('Email inválido. Informe um e-mail válido.')
+                self.cadastro_cliente()
 
-        if not is_valido:
-            print('Telefone inválido. Informe um telefone válido.')
-            self.cadastro_cliente()
+            self.dados_validados['email'] = is_valido
+            self.user.email = email
 
-        senha = str(input('Senha: '))
-        is_valido = self.validar(senha, 'senha')
+        if not self.dados_validados['data_nascimento']:
+            data_nascimento = str(input('Data de Nascimento: '))
+            is_valido = self.validar(data_nascimento, 'data_nascimento')
 
-        if not is_valido:
-            print('Senha inválida. Informe uma senha válida.')
-            self.cadastro_cliente()
+            if not is_valido:
+                print('Data de nascimento inválida. Informe uma data de nascimento válida.')
+                self.cadastro_cliente()
 
-        if is_valido:
-            log = self.user.cadastrar(nome, cpf, email, data_nascimento, telefone, senha)
+            self.dados_validados['data_nascimento'] = is_valido
+            data_nascimento = self.converter_data(data_nascimento)
+            self.user.data_nascimento = data_nascimento
+
+        if not self.dados_validados['telefone']:
+            telefone = str(input('Telefone: '))
+            is_valido = self.validar(telefone, 'telefone')
+
+            if not is_valido:
+                print('Telefone inválido. Informe um telefone válido.')
+                self.cadastro_cliente()
+
+            self.dados_validados['telefone'] = is_valido
+            self.user.telefone = telefone
+
+        if not self.dados_validados['senha']:
+            senha = str(input('Senha: '))
+            is_valido = self.validar(senha, 'senha')
+
+            if not is_valido:
+                print('Senha inválida. Informe uma senha válida.')
+                self.cadastro_cliente()
+
+            self.dados_validados['senha'] = is_valido
+            self.user.senha = senha
+
+        is_valido = all(self.dados_validados.values())
+        
+        if is_valido:    
+            log = self.user.cadastrar(self.user.nome, 
+                                      self.user.cpf, 
+                                      self.user.email, 
+                                      self.user.data_nascimento, 
+                                      self.user.telefone, 
+                                      self.user.senha
+                                    )
             print(log)
 
     def cadastro_funcionario(self):
@@ -100,51 +140,85 @@ Cadastre-se
 Cadastro de Funcionário
 -----------------------''')
         
-        nome = str(input('Nome: '))
-        is_valido = self.validar(nome, 'nome')
+        if not self.dados_validados['nome']:
+            nome = str(input('Nome: '))
+            nome = self.converter_nome(nome)
+            is_valido = self.validar(nome, 'nome')
 
-        if not is_valido:
-            print('Nome inválido.')
-            self.cadastro_funcionario()
+            if not is_valido:
+                print('Nome inválido.')
+                self.cadastro_funcionario()
 
-        cpf = str(input('CPF: '))
-        is_valido = self.validar(cpf, 'cpf')
+            self.dados_validados['nome'] = is_valido
+            self.user.nome = nome
+
+        if not self.dados_validados['cpf']:
+            cpf = str(input('CPF: '))
+            is_valido = self.validar(cpf, 'cpf')
         
-        if not is_valido:
-            print('CPF inválido. Informe um CPF válido')
-            self.cadastro_funcionario() 
+            if not is_valido:
+                print('CPF inválido. Informe um CPF válido')
+                self.cadastro_funcionario()
 
-        email = str(input('Email: '))
-        is_valido = self.validar(email, 'email')
+            self.dados_validados['cpf'] = is_valido
+            self.user.cpf = cpf
+
+        if not self.dados_validados['email']:
+            email = str(input('Email: '))
+            is_valido = self.validar(email, 'email')
         
-        if not is_valido:
-            print('Email inválido. Informe um e-mail válido')
-            self.cadastro_funcionario()
+            if not is_valido:
+                print('Email inválido. Informe um e-mail válido')
+                self.cadastro_funcionario()
+            
+            self.dados_validados['email'] = is_valido
+            self.user.email = email
 
-        data_nascimento = str(input('Data de Nascimento: '))
-        is_valido = self.validar(data_nascimento, 'data_nascimento')
+        if not self.dados_validados['data_nascimento']:
+            data_nascimento = str(input('Data de Nascimento: '))
+            is_valido = self.validar(data_nascimento, 'data_nascimento')
 
-        if not is_valido:
-            print('Data de nascimento inválida. Informe uma data de nascimento válida.')
-            self.cadastro_funcionario()
+            if not is_valido:
+                print('Data de nascimento inválida. Informe uma data de nascimento válida.')
+                self.cadastro_funcionario()
 
-        data_nascimento = self.converter_data(data_nascimento)
+            self.dados_validados['data_nascimento'] = is_valido
+            data_nascimento = self.converter_data(data_nascimento)
+            self.user.data_nascimento = data_nascimento
 
-        telefone = str(input('Telefone: '))
-        is_valido = self.validar(telefone, 'telefone')
+        if not self.dados_validados['telefone']:
+            telefone = str(input('Telefone: '))
+            is_valido = self.validar(telefone, 'telefone')
 
-        if not is_valido:
-            print('Telefone inválido. Informe um telefone válido.')
-            self.cadastro_funcionario()
+            if not is_valido:
+                print('Telefone inválido. Informe um telefone válido.')
+                self.cadastro_funcionario()
+            
+            self.dados_validados['telefone'] = is_valido
+            self.user.telefone = telefone
         
-        senha = str(input('Senha: '))
-        is_valido = self.validar(senha, 'senha')
-        if not is_valido:
-            print('Senha inválida. Informe uma senha válida.')
-            self.cadastro_funcionario()
+        if not self.dados_validados['senha']:
+            senha = str(input('Senha: '))
+            is_valido = self.validar(senha, 'senha')
+            
+            if not is_valido:
+                print('Senha inválida. Informe uma senha válida.')
+                self.cadastro_funcionario()
 
+            self.dados_validados['senha'] = is_valido
+            self.user.senha = senha
+
+        is_valido = all(self.dados_validados.values())
+        
         if is_valido:
-            log = self.user.cadastrar(nome, cpf, email, data_nascimento, telefone, senha)
+            log = self.user.cadastrar(self.user.nome, 
+                                      self.user.cpf, 
+                                      self.user.email, 
+                                      self.user.data_nascimento, 
+                                      self.user.telefone, 
+                                      self.user.senha
+                                    )
+            
             print(log)
 
     def deletar_usuário(self):
@@ -183,7 +257,7 @@ Bibliotech
 
         match atributo:
             case 'nome':
-                if not dado.isalpha():
+                if any(char.isdigit() for char in dado):
                     return False
                 
                 if len(dado) < 3:
