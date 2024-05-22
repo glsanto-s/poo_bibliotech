@@ -25,7 +25,7 @@ class Usuario:
                 "adm": None,
                 "status": False
             }
-            print(id_message["Message"])
+            print(id_message["message"])
             return id_message
         elif rows[0][0] == senha:
             validacao_user = rows[0][1]
