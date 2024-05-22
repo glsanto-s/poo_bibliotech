@@ -87,19 +87,21 @@ class Base():
         try:
             conection = conn
             cursor = conection.cursor()
-            query = f"SELECT * FROM {self.tabela} WHERE {campo} LIKE '%{valor}%'"
+            if isinstance(valor, (int, float, complex)):
+                query = f"SELECT * FROM {self.tabela} WHERE {campo} = {valor}"
+            else:
+                query = f"SELECT * FROM {self.tabela} WHERE {campo} LIKE '%{valor}%'"
+
             cursor.execute(query)
 
             res = cursor.fetchone()
             if res:
-                print("Consulta bem-sucedida!")
-                id = res[0]
+                retorno = res
             else:
-                print(f"Nenhum resultado encontrado para o {campo}:", valor)
-                id = "sem cadastro"
+                retorno = "sem registro"
 
             conection.commit()
-            return id
+            return retorno
         except KeyError as e:
             conection.rollback()
             print("Erro ao executar a consulta:", e)
@@ -117,7 +119,7 @@ class Livro(Base):
         super().__init__('livro',['titulo','id_autor', 'id_editora','categoria','isbn','data_publicacao'])
 
 class LivroDigital(Base):
-    def __init__(self, tamanho, versao, formato, id_livro,id):
+    def __init__(self, id_livro,tamanho, versao, formato, id):
         self.id = id
         self.tamanho = tamanho
         self.versao = versao
@@ -127,7 +129,7 @@ class LivroDigital(Base):
         super().__init__('livro_digital', ['id_livro','tamanho','versao','formato'])
 
 class LivroFisico(Base):
-    def __init__(self, quantidade, id_livro,id):
+    def __init__(self, id_livro, quantidade, id):
         self.id = id
         self.quantidade = quantidade
         self.id_livro = id_livro
