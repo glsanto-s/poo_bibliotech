@@ -6,14 +6,17 @@ class SQL_COMMANDS:
 
     def create_user(self, nome, cpf, email, data_nascimento, telefone, senha, adm):
         self.cur.execute(f"""SELECT email from usuario WHERE email = '{email}'""")
-        rows = self.cur.fetchall()
-        if rows == []:
-            self.cur.execute(f"""INSERT INTO usuario (nome, cpf, email, data_nascimento, telefone, senha, adm)
+        if self.cur.fetchone():
+            return 'Email já Utilizado!'
+        
+        self.cur.execute(f"""SELECT cpf from usuario WHERE cpf = '{cpf}'""")
+        if self.cur.fetchone():
+            return 'CPF já Utilizado!'
+        
+        self.cur.execute(f"""INSERT INTO usuario (nome, cpf, email, data_nascimento, telefone, senha, adm)
                         VALUES ('{nome}', '{cpf}', '{email}', '{data_nascimento}', '{telefone}', '{senha}', '{adm}')""")
-            conn.commit()
-            return 'Usuário Cadastrado!'
-        else:
-            return 'Usuário já existente!'
+        conn.commit()
+        return 'Usuário Cadastrado!'
         
 
     def delete_user(self, email):

@@ -21,7 +21,8 @@ class Usuario:
         if rows == []:
             id_message = {
                 "id" : None,
-                "Message": error_message1,
+                "message": error_message1,
+                "adm": None,
                 "status": False
             }
             print(id_message["Message"])
@@ -31,7 +32,8 @@ class Usuario:
             id_message = {
                     "id" : f"{rows[0][3]}",
                     "message": validate_message,
-                    "adm": f"{validacao_user}"
+                    "adm": f"{validacao_user}",
+                    "status": None
                 }
             if validacao_user == '1':
                 print(id_message["message"])
@@ -43,6 +45,7 @@ class Usuario:
             id_message = {
                 "id" : f"{rows[0][3]}",
                 "message": error_message2,
+                "adm": None,
                 "status": True
             }
             print(id_message["message"])

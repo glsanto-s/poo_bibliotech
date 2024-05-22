@@ -136,7 +136,12 @@ Cadastre-se
                                       self.user.telefone, 
                                       self.user.senha
                                     )
-            print(log)
+            if log != 'Usuário Cadastrado!':
+                print(log)
+                self.tela_principal()
+            else:
+                print(log)
+                self.login()
 
     def cadastro_funcionario(self):
         print('''
@@ -222,8 +227,12 @@ Cadastro de Funcionário
                                       self.user.telefone, 
                                       self.user.senha
                                     )
-            
-            print(log)
+            if log != 'Usuário Cadastrado!':
+                print(log)
+                self.tela_principal()
+            else:
+                print(log)
+                self.login()
 
     def deletar_usuário(self):
         email = str(input('Email: '))
