@@ -1,8 +1,7 @@
 from sql import SQL_COMMANDS
-from funcionario import ConfigFuncionario
 from colorama import init, Fore
 import exibir
-import catalogo
+import catalogo 
 from menus_func import menu_principal
 
 
@@ -11,7 +10,6 @@ init(autoreset=True)
 class Usuario:
     def __init__(self):
         self.sql_commands = SQL_COMMANDS()
-        self.func = ConfigFuncionario()
 
     def logar(self, email, senha):
         self.email = email
@@ -69,7 +67,17 @@ class Funcionario(Usuario)  :
             self.funcionario = None 
             super().__init__()
         
-        def cadastrar_funcionario(self, nome, cpf, email, data_nascimento, telefone, senha):
+        def cadastrar_funcionario(self):
+            print('''
+-----------------------
+Cadastro de Funcionário
+-----------------------''')
+            nome = str(input('Nome: '))
+            cpf = str(input('CPF: '))
+            email = str(input('Email: '))
+            data_nascimento = str(input('Data de Nascimento: '))
+            telefone = str(input('Telefone: '))
+            senha = str(input('Senha: '))
             self.nome = nome
             self.cpf = cpf
             self.email = email
@@ -89,7 +97,6 @@ class Funcionario(Usuario)  :
                 print(f"Email: {self.funcionario[0][2]}")
                 print(f"Data de nascimento: {self.funcionario[0][3]}")
                 print(f"Telefone: {self.funcionario[0][4]}")
-                print(f"Senha: {self.funcionario[0][5]}")
             else:
                 print(Fore.RED + 'Erro ao encontrar usuário.')
 
@@ -101,7 +108,8 @@ class Funcionario(Usuario)  :
                 print('1. Minha Conta')
                 print('2. Configurar Livros')
                 print('3. Catálogo de Livros')
-                print('4. Dashboard')
+                print('4. Cadastro de Funcionários')
+                print('5. Dashboard')
                 print('0. Sair')
 
                 opcao = input("Escolha uma opção: ")
@@ -119,6 +127,9 @@ class Funcionario(Usuario)  :
                 elif opcao == '3':
                     catalogo.Catalogo()
                 elif opcao == '4':
+                    print('')
+                    self.cadastrar_funcionario()
+                elif opcao == '5':
                     print(Fore.LIGHTYELLOW_EX + 'Opção ainda não configurada!')
                 elif opcao == '0':
                     print(Fore.BLUE + "Saindo...")
