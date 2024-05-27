@@ -1,4 +1,4 @@
-from conexao import conn 
+from conexao import Conexao 
 from datetime import datetime 
 
 class Base():
@@ -26,7 +26,7 @@ class Base():
         conection = None
         cursor = None
         try:
-            conection = conn
+            conection = Conexao.get_connection()
             cursor = conection.cursor()
             query = f"INSERT INTO {self.tabela} ({campos}) VALUES ({valores})"
             cursor.execute(query)
@@ -49,7 +49,7 @@ class Base():
             conection = None
             cursor = None
             try:
-                conection = conn
+                conection = Conexao.get_connection()
                 cursor = conection.cursor()
                 query = f"UPDATE {self.tabela} SET {campos_valores} WHERE {campoId} = {id}"
                 cursor.execute(query)
@@ -68,7 +68,7 @@ class Base():
         conection = None
         cursor = None
         try:
-            conection = conn
+            conection = Conexao.get_connection()
             cursor = conection.cursor()
             query = f"DELETE FROM {self.tabela} WHERE {campoId} = {id}"
             cursor.execute(query)
@@ -85,7 +85,7 @@ class Base():
         conection = None
         cursor = None
         try:
-            conection = conn
+            conection = Conexao.get_connection()
             cursor = conection.cursor()
             if isinstance(valor, (int, float, complex)):
                 query = f"SELECT * FROM {self.tabela} WHERE {campo} = {valor}"

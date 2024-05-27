@@ -1,8 +1,9 @@
-from conexao import conn
+from poo_bibliotech.conexao import Conexao
 
 class SQL_COMMANDS:
     def __init__(self):
-        self.cur = conn.cursor()
+        self.conn = Conexao.get_connection()
+        self.cur = self.conn.cursor()
 
     def create_user(self, nome, cpf, email, data_nascimento, telefone, senha, adm):
         self.cur.execute(f"""SELECT email from usuario WHERE email = '{email}'""")
@@ -15,7 +16,7 @@ class SQL_COMMANDS:
         
         self.cur.execute(f"""INSERT INTO usuario (nome, cpf, email, data_nascimento, telefone, senha, adm)
                         VALUES ('{nome}', '{cpf}', '{email}', '{data_nascimento}', '{telefone}', '{senha}', '{adm}')""")
-        conn.commit()
+        self.conn.commit()
         return 'Usuário Cadastrado!'
         
 
@@ -28,7 +29,7 @@ class SQL_COMMANDS:
             self.cur.execute(f""" DELETE FROM usuario
                          WHERE email = '{email}'
                          """)
-            conn.commit()
+            self.conn.commit()
             return "Usuário Removido!"
         
     def validacao_login(self, email, senha):
@@ -38,6 +39,6 @@ class SQL_COMMANDS:
                          WHERE email = '{email}'
                          """)
         rows = self.cur.fetchall()
-        conn.commit()
+        self.conn.commit()
         return rows
         

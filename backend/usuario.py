@@ -1,7 +1,7 @@
-from sql import SQL_COMMANDS
+from poo_bibliotech.sql import SQL_COMMANDS
 from colorama import init, Fore
-import exibir
-import catalogo 
+import poo_bibliotech.exibir as exibir
+import poo_bibliotech.catalogo as catalogo 
 from menus_func import menu_principal
 
 init(autoreset=True)
@@ -112,7 +112,7 @@ class Funcionario(Usuario)  :
                     catalogo.Catalogo()
                 elif opcao == '4':
                     print('')
-                    from telas_login import Telas
+                    from poo_bibliotech.telas_login import Telas
                     Telas().cadastro_funcionario()
                 elif opcao == '5':
                     print(Fore.LIGHTYELLOW_EX + 'Opção ainda não configurada!')
