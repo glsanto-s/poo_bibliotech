@@ -1,4 +1,4 @@
-from poo_bibliotech.conexao import Conexao
+from conexao import Conexao
 
 class SQL_COMMANDS:
     def __init__(self):

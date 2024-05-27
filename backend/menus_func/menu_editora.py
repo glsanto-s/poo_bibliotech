@@ -1,4 +1,4 @@
-from poo_bibliotech.acoes_funcionario import Editora
+from acoes_funcionario import Editora
 from colorama import init, Fore, Style
 
 init(autoreset=True)

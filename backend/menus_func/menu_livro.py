@@ -1,4 +1,4 @@
-import poo_bibliotech.acoes_funcionario as acoes_funcionario
+import acoes_funcionario as acoes_funcionario
 from colorama import init, Fore, Style
 
 # Inicializar colorama para suportar cores no terminal

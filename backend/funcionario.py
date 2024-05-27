@@ -1,7 +1,7 @@
 from colorama import init, Fore, Style
 from menus_func import menu_principal
-import poo_bibliotech.exibir as exibir
-import poo_bibliotech.catalogo as catalogo
+import exibir as exibir
+import catalogo as catalogo
 
 
 init(autoreset=True)

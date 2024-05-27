@@ -1,7 +1,7 @@
-from poo_bibliotech.sql import SQL_COMMANDS
+from sql import SQL_COMMANDS
 from colorama import init, Fore
-import poo_bibliotech.exibir as exibir
-import poo_bibliotech.catalogo as catalogo 
+import exibir as exibir
+import catalogo as catalogo 
 from menus_func import menu_principal
 
 init(autoreset=True)

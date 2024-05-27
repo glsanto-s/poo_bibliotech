@@ -1,6 +1,6 @@
 from colorama import init, Fore, Style
 import exibir
-import poo_bibliotech.catalogo as catalogo
+import catalogo as catalogo
 
 
 # Inicializar colorama para suportar cores no terminal

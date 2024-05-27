@@ -1,0 +1,29 @@
+.nav-bar{
+    background-color: #d9d3d3cc;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px;
+          height: 8vh;
+          font-size: 20px;
+}
+.nav-bar a{
+    margin-left: 2rem; 
+    text-decoration: none; 
+    color: black
+}
+.menu{
+    display: flex; justify-content: space-around
+}
+
+footer{
+    background-color: #bbbbbb57; font-size: 14px; padding: 30px
+}
+.redes{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.redes p{
+    color: #000; padding-left: 10px
+}
