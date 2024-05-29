@@ -35,8 +35,9 @@ class SQL_COMMANDS:
     def validacao_login(self, email, senha):
         self.email = email
         self.senha = senha
+        
         self.cur.execute(f""" SELECT senha, adm, nome, id_usuario FROM usuario
-                         WHERE email = '{email}'
+                         WHERE email = '{self.email}'
                          """)
         rows = self.cur.fetchall()
         self.conn.commit()

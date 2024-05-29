@@ -1,75 +1,57 @@
 from acoes_funcionario import Editora
-from colorama import init, Fore, Style
 
-init(autoreset=True)
+def response(metodo):
+    res = {
+        200 : f'Editora {metodo} com sucesso!',
+        404 : f'Não encontramos essa editora!',
+        422 : f'Editora já cadastrada no sistema!'
+    }
+    return res
 
-def exibir_menu_editora():
-    print(Fore.CYAN + "\n----- Menu Editoras -----")
-    print("1. Adicionar Editora")
-    print("2. Excluir Editora")
-    print("3. Alterar Editora")
-    print("0. Voltar")
-
-
-def adicionar_editora():
-    editora = input('Nome editora: ')
-
+def adicionar_editora(nomeEditora):
     addEditora = Editora(
         id=None,
-        nome = editora
+        nome = nomeEditora
     )
     idEditora_res = addEditora.procurar('nome', addEditora.nome)
     
+    retorno = response('cadastrada')
     if idEditora_res == "sem registro":
-        print(Fore.GREEN + "\nAdicionando um nova editora...")
-        res = addEditora.adicionar(addEditora.nome)
+        addEditora.adicionar(addEditora.nome)
+        res = retorno[200] 
     else:
-        res = Fore.YELLOW +"Editora já cadastrada!"
-    print(res)
+        res = retorno[422] 
+    return res
 
 
-def excluir_editora():
-    id = int(input('Id da editora: '))
-
+def excluir_editora(idEditora):
     excluirEditora = Editora(
-        id=id,
+        id=idEditora,
         nome = None
     )
     
+    retorno = response('excluída')
     pesquisa = excluirEditora.procurar('id_editora',excluirEditora.id)
     if pesquisa != "sem registro": 
-        print(f'Editora prestes a excluir: {pesquisa[1]}')
-        op = input("Confirmar (S/N)? ")
-        if op == 'S':
-            print(Fore.GREEN + "\nExcluindo editora...")
-            res = excluirEditora.excluir(excluirEditora.id)
-            print(res)
-        else:
-            print(Fore.BLUE + "\nVoltando...")
+        excluirEditora.excluir(excluirEditora.id)
+        res = retorno[200] 
     else:
-        print(Fore.RED +'Não foi encontrada nenhuma editora com esse id!')
+        res = retorno[404]
+    return res
 
     
-def alterar_editora():
-
-    id = int(input('Id da editora: '))
-    editora = input('Nome: ')
-
+def alterar_editora(idEditora, nomeEditora):
     alterarEditora = Editora(
-        id=id,
-        nome = editora
+        id=idEditora,
+        nome = nomeEditora
     )
+    
+    retorno = response('alterada')
     pesquisa = alterarEditora.procurar('id_editora',alterarEditora.id)
     if pesquisa != "sem registro": 
-        print(f'Editora prestes a editar: {pesquisa[1]} para {alterarEditora.nome}')
-        op = input("Confirmar (S/N)? ")
-        if op == 'S':
-            print(Fore.GREEN + "\nAlterando editora...")
-            res = alterarEditora.alterar(alterarEditora.id, nome = alterarEditora.nome)
-            print(res)
-        else:
-            print(Fore.BLUE + "\nVoltando...")
+        alterarEditora.alterar(alterarEditora.id, nome = alterarEditora.nome)
+        res = retorno[200] 
     else:
-        print(Fore.RED +'Não foi encontrada nenhuma editora com esse id!')
-
+        res = retorno[404]
+    return res
     

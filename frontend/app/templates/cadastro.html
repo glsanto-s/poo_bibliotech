@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    {% block head %}
+        {% load static %}
+        <link rel="stylesheet" href="{% static './css/cadastro_login.css' %}">
+    {% endblock %}
+</head>
+<body>
+    <div class="register-container">
+        <h2>Cadastro</h2>
+        {% if message %}
+          <div class="alert alert-warning">{{ message }}</div>
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Cadastrar</button>
+        </form>
+        <a class="login-link" href="{% url 'login' %}">Já tem uma conta? Faça login</a>
+    </div>
+</body>
+</html>

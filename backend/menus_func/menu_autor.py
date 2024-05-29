@@ -1,68 +1,54 @@
 from acoes_funcionario import Autor
-from colorama import init, Fore, Style
 
-# Inicializar colorama para suportar cores no terminal
-init(autoreset=True)
+def response(metodo):
+    res = {
+        200 : f'Autor {metodo} com sucesso!',
+        404 : f'Não encontramos esse autor!',
+        422 : f'Autor já cadastrado no sistema!'
+    }
+    return res
 
-def exibir_menu_autor():
-    print(Fore.CYAN + "\n----- Menu Autores -----")
-    print("1. Adicionar Autor")
-    print("2. Excluir Autor")
-    print("3. Alterar Autor")
-    print("0. Voltar")
-
-def adicionar_autor():
-    autor = input('Nome autor: ')
-
+def adicionar_autor(nomeAutor):
     addAutor = Autor(
         id=None,
-        nome = autor
+        nome = nomeAutor
     )
+    
+    retorno = response('cadastrado')
     pesquisa = addAutor.procurar('nome',addAutor.nome)
     if pesquisa == "sem registro": 
-        print(Fore.GREEN + "\nAdicionando um novo autor...")
         addAutor.adicionar(addAutor.nome)
+        res = retorno[200]
     else:
-        print(Fore.BLUE + "\nAutor já cadastrado!")
+        res = retorno[422]
+    return res
 
-def excluir_autor():
-    id = int(input('Id do autor: '))
-
+def excluir_autor(idAutor):
     excluirAutor = Autor(
-        id=id,
+        id=idAutor,
         nome = None
     )
+    
+    retorno = response('excluído')
     pesquisa = excluirAutor.procurar('id_autor',excluirAutor.id)
     if pesquisa != "sem registro": 
-        print(f'Autor prestes a excluir: {pesquisa[1]}')
-        op = input("Confirmar (S/N)? ")
-        if op == 'S':
-            print(Fore.GREEN + "\nExcluindo autor...")
-            excluirAutor.excluir(excluirAutor.id)
-        else:
-            print(Fore.BLUE + "\nVoltando...")
+        excluirAutor.excluir(excluirAutor.id)
+        res = retorno[200]
     else:
-        print(Fore.RED +'Não foi encontrada nenhum autor com esse id!')
-
+        res = retorno[404]
+    return res
     
-def alterar_autor():
-
-    id = int(input('Id do autor: '))
-    autor = input('Nome: ')
-
+def alterar_autor(idAutor, nomeAutor):
     alterarAutor = Autor(
-        id=id,
-        nome = autor
+        id=idAutor,
+        nome = nomeAutor
     )
     
+    retorno = response('alterado')
     pesquisa = alterarAutor.procurar('id_autor',alterarAutor.id)
     if pesquisa != "sem registro": 
-        print(f'Autor prestes a alterar: {pesquisa[1]} para {alterarAutor.nome}')
-        op = input("Confirmar (S/N)? ")
-        if op == 'S':
-            print(Fore.GREEN + "\nAlterando autor...")
-            alterarAutor.alterar(alterarAutor.id, nome= alterarAutor.nome)
-        else:
-            print(Fore.BLUE + "\nVoltando...")
+        alterarAutor.alterar(alterarAutor.id, nome= alterarAutor.nome)
+        res = retorno[200]
     else:
-        print(Fore.RED +'Não foi encontrada nenhum autor com esse id!')
+        res = retorno[404]
+    return res
