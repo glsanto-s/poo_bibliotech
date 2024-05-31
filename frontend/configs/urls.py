@@ -20,6 +20,6 @@ from app.views import listar_livros, categoria, logar, registrar
 urlpatterns = [
     path('catalogo/', listar_livros, name='catalogo'),
     path('catalogo/<categoria>/', categoria, name='categoria'),
-    path('login/' , logar, name='login'),
+    path('' , logar, name='login'),
     path('cadastro/', registrar, name='cadastro')
 ]

@@ -4,8 +4,6 @@ from backend.usuario import Usuario
 from .forms import CadastroForm
 from .forms import Login
 
-# Create your views here.
-
 def listar_categorias(livros):
     categorias = []
     if livros == 'error':
@@ -35,35 +33,39 @@ def listar_livros(request):
         return redirect('login')
     
 def logar(request):
-    mensagem = ''
-    if request.method == 'POST':
-        form = Login(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            senha = form.cleaned_data['senha']
+    idUser = request.session.get('idUser')
+    if idUser is None:
+        mensagem = ''
+        if request.method == 'POST':
+            form = Login(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data['email']
+                senha = form.cleaned_data['senha']
 
-            validarUser = Usuario().logar(email,senha)
-            if validarUser["status"] == True:
-                request.session['idUser'] = validarUser["id"]
-                request.session.save()
-                if validarUser['adm'] == 0:
-                    return redirect('catalogo')
-                else:
-                    request.session['LoginMensagem'] = 'Tela de adm, ainda em andamento!'
+                validarUser = Usuario().logar(email,senha)
+                if validarUser["status"] == True:
+                    request.session['idUser'] = validarUser["id"]
                     request.session.save()
-            else:
-                request.session['LoginMensagem'] = validarUser["message"] 
-                request.session.save()
-    else:
-        form = Login()
+                    if validarUser['adm'] == '0':
+                        return redirect('catalogo')
+                    else:
+                        request.session['LoginMensagem'] = 'Tela de adm, ainda em andamento!'
+                        request.session.save()
+                else:
+                    request.session['LoginMensagem'] = validarUser["message"] 
+                    request.session.save()
+        else:
+            form = Login()
     
-    mensagemSession = request.session.get('LoginMensagem')
-    if mensagemSession:
-        mensagem = mensagemSession
-        del request.session['LoginMensagem']
-        request.session.save()
-        
-    return render(request, 'templates/login.html', {'form':form,'message':mensagem})
+        mensagemSession = request.session.get('LoginMensagem')
+        if mensagemSession:
+            mensagem = mensagemSession
+            del request.session['LoginMensagem']
+            request.session.save()
+            
+        return render(request, 'templates/login.html', {'form':form,'message':mensagem})
+    else:
+        return redirect('catalogo')
 
 def registrar(request):
     mensagem = ''
