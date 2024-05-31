@@ -10,7 +10,7 @@ function handleChange() {
     if (formCategoria.value !== 'todas') {
       window.location.assign(`${url}/catalogo/${formCategoria.value}`);
     } else {
-      window.location.assign(url);
+      window.location.assign(`${url}/catalogo`);
     }
   }
 }

@@ -6,7 +6,7 @@ function handleChange() {
   pesquisarTitulo.setAttribute('disabled', '');
   if (formCategoria instanceof HTMLSelectElement) {
     if (formCategoria.value !== 'todas') {
-      window.location.href = `catalogo/${formCategoria.value}`;
+      window.location.href = `${formCategoria.value}`;
     }
   }
 }

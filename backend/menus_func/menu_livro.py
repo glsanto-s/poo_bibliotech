@@ -1,27 +1,20 @@
 import acoes_funcionario as acoes_funcionario
-from colorama import init, Fore, Style
 
-# Inicializar colorama para suportar cores no terminal
-init(autoreset=True)
-
-def exibir_menu_livros():
-    print(Fore.CYAN + "\n----- Menu Livros -----")
-    print("1. Adicionar Livro")
-    print("2. Excluir Livro")
-    print("3. Alterar Livro")
-    print("0. Voltar")
+def response(metodo):
+    res = {
+        200 : f'Livro {metodo} com sucesso!',
+        404 : f'Não encontramos esse livro!',
+        422 : f'Livro já cadastrado no sistema!'
+    }
+    return res
     
-def adicionar_livro():
-    titulo = input('Título: ')
-
-    autor = input('Nome autor: ')
+def adicionar_livro(titulo, autor, editora, categoria, isbn, dataPublicacao, quantidade, tamanho, versao, formato):
+    retorno = response('adicionado')
     idAutor = acoes_funcionario.Autor(
         id=None,
         nome = autor
     )
     idAutor_res = idAutor.procurar('nome',autor)
-
-    editora = input('Nome editora: ')
     idEditora = acoes_funcionario.Editora(
         id=None,
         nome = editora
@@ -29,13 +22,9 @@ def adicionar_livro():
     idEditora_res = idEditora.procurar('nome',editora)
 
     if idAutor_res == "sem registro":
-        return print(Fore.YELLOW + 'Não encontramos o autor! Registre-o primeiro e depois tente adicionar o livro novamente.')
+        return 'Não encontramos o autor! Registre-o primeiro e depois tente adicionar o livro novamente.'
     elif  idEditora_res == "sem registro":
-        return print(Fore.YELLOW + 'Não encontramos a editora! Registre-a primeiro e depois tente adicionar o livro novamente.')
-    
-    categoria = input('Categoria: ')
-    isbn = input('ISBN: ')
-    dataPublicacao = input('Data de publicação: ')
+        return 'Não encontramos a editora! Registre-a primeiro e depois tente adicionar o livro novamente.'
     
     addLivro = acoes_funcionario.Livro( 
         id= None, 
@@ -48,9 +37,8 @@ def adicionar_livro():
     
     pesquisa = addLivro.procurar('titulo', addLivro.titulo)
     if pesquisa != "sem registro":
-        return print(Fore.RED + 'Livro já existente, verifique o catálogo!')
+        return retorno[422]
 
-    print(Fore.GREEN + "\nAdicionando um novo livro...")
     addLivro.adicionar(
         addLivro.titulo, 
         addLivro.idAutor, 
@@ -59,46 +47,36 @@ def adicionar_livro():
         addLivro.isbn, 
         addLivro.dataPublicacao)
 
-    print('Qual tipo de livro você está cadastrando?')
-    print('1. Físico')
-    print('2. Digital')
-    opcao= input('Digite a opção: ')
+    getIdLivro = addLivro.procurar('titulo', addLivro.titulo)
 
-    livro_res = addLivro.procurar('titulo', addLivro.titulo)
-    if opcao == '1':
-        qtd = livro_fisico()
-        livroFisico = acoes_funcionario.LivroFisico(
-            id_livro = livro_res[0],
-            quantidade = qtd,
-            id = None
-        )
-        livroFisico.adicionar(livroFisico.id_livro, livroFisico.quantidade)
+    qtd = quantidade
+    livroFisico = acoes_funcionario.LivroFisico(
+        id_livro = getIdLivro[0],
+        quantidade = qtd,
+        id = None
+    )
+    livroFisico.adicionar(livroFisico.id_livro, livroFisico.quantidade)
 
-    elif opcao == '2':
-        obj = livro_digital()
-        livroDigital= acoes_funcionario.LivroDigital(
-            id_livro = livro_res[0],
-            tamanho = obj['tamanho'],
-            versao = obj['versao'],
-            formato = obj['formato'],
-            id = None
-        )
-        livroDigital.adicionar(
-            livroDigital.id_livro,
-            livroDigital.tamanho, 
-            livroDigital.versao, 
-            livroDigital.formato)
-    else:
-        print('Opção Incorreta')
-        opcao= input('Digite a opção: ')
 
-    print(Fore.GREEN + 'Livro adicionado com sucesso!')
+    livroDigital= acoes_funcionario.LivroDigital(
+        id_livro = getIdLivro[0],
+        tamanho = tamanho,
+        versao = versao,
+        formato = formato,
+        id = None
+    )
+    livroDigital.adicionar(
+        livroDigital.id_livro,
+        livroDigital.tamanho, 
+        livroDigital.versao, 
+        livroDigital.formato)
 
-def excluir_livro():
-    id = int(input('Id do livro: '))
+    return retorno[200]
+
+def excluir_livro(idLivro):
 
     excluirLivro = acoes_funcionario.Livro(
-        id= id, 
+        id= idLivro, 
         titulo= None,
         idAutor= None,
         idEditora= None,
@@ -106,75 +84,57 @@ def excluir_livro():
         isbn= None,
         dataPublicacao= None
     )
-
+    retorno = response('excluído')
     pesquisa = excluirLivro.procurar('id_livro',excluirLivro.id)
     if pesquisa != "sem registro": 
-        print(f'Livro prestes a excluir: {pesquisa[1]}')
-        op = input("Confirmar (S/N)? ")
-        if op == 'S':
-            print(Fore.GREEN + "\nExcluindo livro...")
-            res = excluirLivro.excluir(excluirLivro.id)
-            print(res)
-        else:
-            print(Fore.BLUE + "\nVoltando...")
+        excluirLivro.excluir(excluirLivro.id)
+        res = retorno(200)
     else:
-        print(Fore.RED +'Não foi encontrada nenhum livro com esse id!')
+        res = retorno(404)
+    return res
 
     
     
-def alterar_livro():
-    print("Caso não queira alterar o campo, deixar vazio!")
+def alterar_livro(idLivro,titulo, categoria, isbn, dataPublicacao, autor, editora):
+    idAutor = acoes_funcionario.Autor(
+        id=None,
+        nome = autor
+    )
+    idAutor_res = idAutor.procurar('nome',autor)
+    idEditora = acoes_funcionario.Editora(
+        id=None,
+        nome = editora
+    )
+    idEditora_res = idEditora.procurar('nome',editora)
 
-    id = int(input('Id do livro: '))
-    titulo = input('Título: ')
-    categoria = input('Categora: ')
-    isbn = input('ISBN: ')
-    dataPublicacao = input('Data de publicação: ')
-
+    if idAutor_res == "sem registro":
+        return 'Não encontramos o autor! Registre-o primeiro e depois tente alterar o livro novamente.'
+    elif  idEditora_res == "sem registro":
+        return 'Não encontramos a editora! Registre-a primeiro e depois tente alterar o livro novamente.'
+    
     alterarLivro = acoes_funcionario.Livro(
-        id= id, 
+        id= idLivro, 
         titulo= titulo,
-        idAutor= None,
-        idEditora= None,
+        idAutor= idAutor_res[0],
+        idEditora= idEditora_res[0],
         categoria= categoria,
         isbn= isbn,
         dataPublicacao= dataPublicacao
     )
 
-    dic = {'titulo': titulo, 'categoria':categoria, 'isbn':isbn, 'dataPublicacao': dataPublicacao}
+    dic = {'titulo': titulo, 'categoria':categoria, 'isbn':isbn, 'dataPublicacao': dataPublicacao,'autor': idAutor_res[0], 'editora': idEditora_res[0]}
     values = remover_chaves_vazias(alterarLivro.id,dic)
 
+    retorno = response('alterado')
     pesquisa = alterarLivro.procurar('id_livro',alterarLivro.id)
     if pesquisa != "sem registro": 
-        print(f'Livro prestes a editar: {pesquisa[1]}')
-        op = input("Confirmar (S/N)? ")
-        if op == 'S':
-            print(Fore.GREEN + "\nAlterando livro...")
-            res = alterarLivro.alterar(alterarLivro.id,values)
-            print(res)
-        else:
-            print(Fore.BLUE + "\nVoltando...")
+        alterarLivro.alterar(alterarLivro.id,values)
+        res = retorno(200)
     else:
-        print(Fore.RED +'Não foi encontrada nenhum livro com esse id!')
-    
+        res = retorno(404)
+    return res
 
 def remover_chaves_vazias(dicionario):
     chaves_para_remover = [chave for chave, valor in dicionario.items() if not valor]
     for chave in chaves_para_remover:
         del dicionario[chave]
-
-def livro_fisico():
-    qtd= input('Quantidade: ')
-    return qtd
-
-def livro_digital():
-    tamanho= input('Tamanho: ')
-    versao = input('Versao: ')
-    formato= input('Formato: ')
-
-    obj_digital = {
-        "tamanho": tamanho,
-        "versao": versao,
-        "formato": formato
-    }
-    return obj_digital
