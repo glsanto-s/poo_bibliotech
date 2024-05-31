@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% load static %}
+  <link rel="stylesheet" href="{% static './css/index.css' %}">
+  {% block head %} {% endblock head %}
+</head>
+
+<body>
+  <header>
+    <nav class="nav-bar">
+      <a href="#">Logo</a>
+      <div class="menu">
+        <a href="#">Catálogo</a>
+        <a href="#">Contato</a>
+        <a href="#">Perfil</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>{% block content %} {% endblock content %}</main>
+
+  <footer>
+    <p>impactaoficial_</p>
+    <p class="direitosReservados">2024 © Todos os direitos reservados</p>
+    <div class="redes">
+      <p>Faculdade Impacta</p>
+      <p>bibliotech_support@gmail.com</p>
+      <p>FAQ</p>
+    </div>
+  </footer>
+
+  {% block js %}
+
+  {% endblock js %}
+</body>
+
+</html>

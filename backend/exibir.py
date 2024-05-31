@@ -1,16 +1,17 @@
-from conexao import conn
+from conexao import Conexao
 
 class ExibirInfo:
   def __init__(self, idUsuario):
     self.idUsuario = idUsuario
-    self.cur = conn.cursor()
+    self.conn = Conexao.get_connection()
+    self.cur = self.conn.cursor()
     self.usuario = False
      
   def exibir(self):
     try:
       self.cur.execute(f"""SELECT nome, cpf, email, data_nascimento, telefone FROM usuario WHERE id_usuario = '{self.idUsuario}'""")
       usuarios = self.cur.fetchall()
-      conn.commit()
+      self.conn.commit()
       self.usuario = usuarios
       return self.usuario
     except KeyError as e:

@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+}
+
+body {
+  font-family: sans-serif;
+  color: #000;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.nav-bar {
+  background-color: #d9d3d3cc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  font-size: 20px;
+}
+
+.menu {
+  display: flex;
+  gap: 1rem;
+}
+
+.menu a {
+  padding: 0.3rem;
+}
+
+footer {
+  background-color: #bbbbbb57;
+  font-size: 14px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.redes {
+  display: grid;
+  align-items: center;
+}
+
+.direitosReservados {
+  align-self: flex-end;
+}
