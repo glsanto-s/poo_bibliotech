@@ -1,29 +1,57 @@
-.nav-bar{
-    background-color: #d9d3d3cc;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 15px;
-          height: 8vh;
-          font-size: 20px;
-}
-.nav-bar a{
-    margin-left: 2rem; 
-    text-decoration: none; 
-    color: black
-}
-.menu{
-    display: flex; justify-content: space-around
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
 }
 
-footer{
-    background-color: #bbbbbb57; font-size: 14px; padding: 30px
+body {
+  font-family: sans-serif;
+  color: #000;
 }
-.redes{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+
+a {
+  color: inherit;
 }
-.redes p{
-    color: #000; padding-left: 10px
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.nav-bar {
+  background-color: #d9d3d3cc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  font-size: 20px;
+}
+
+.menu {
+  display: flex;
+  gap: 1rem;
+}
+
+.menu a {
+  padding: 0.3rem;
+}
+
+footer {
+  background-color: #bbbbbb57;
+  font-size: 14px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.redes {
+  display: grid;
+  align-items: center;
+}
+
+.direitosReservados {
+  align-self: flex-end;
 }

@@ -1,45 +1,67 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% block head %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static './css/home.css' %}">
+{% load static %}
+<title>Bibliotech | Home</title>
+<link rel="stylesheet" href="{% static './css/home.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="cabecalho">
-    <div class="title">
-        <h3>
-            Catálogo
-        </h3>
-    </div>
-    <div class="pesquisa">
-        <input type="text" placeholder="Escreva aqui">
-    </div>
-  </div>
-  <div class="livros">
-    {% for livro in livros %}
-    <div class="card">
-        <p hidden>{{ livro.0 }}</p>
-        <h4>{{ livro.1 }}</h5>
-        <p>{{ livro.4}}</p>
-        <div class="avaliar">
-            <h6>Avaliações</h6>
-            <div class="rating">
-                <input type="radio" id="star5" name="rating" value="5">
-                <label for="star5" title="5 estrelas">&#9733;</label>
-                <input type="radio" id="star4" name="rating" value="4">
-                <label for="star4" title="4 estrelas">&#9733;</label>
-                <input type="radio" id="star3" name="rating" value="3">
-                <label for="star3" title="3 estrelas">&#9733;</label>
-                <input type="radio" id="star2" name="rating" value="2">
-                <label for="star2" title="2 estrelas">&#9733;</label>
-                <input type="radio" id="star1" name="rating" value="1">
-                <label for="star1" title="1 estrela">&#9733;</label>
-            </div>
+<div class="containerHome">
+    <section class="cabecalho">
+        <div class="title">
+            <h3>
+                Catálogo
+            </h3>
         </div>
-        <br>
-        <button class="btn-reservar">RESERVAR</button>
-    </div>
-    {% endfor %}
-  </div>
-{% endblock content %}
+
+        <div class="pesquisa">
+            <input type="text" placeholder="Titulo do livro...">
+        </div>
+        <form id="select-form" method="POST">
+            {% csrf_token %}
+            <select id="select-categoria" name="select-categoria">
+                <option value="todas" selected>Todas</option>
+                {% for categoria in categorias %}
+                <option value="{{ categoria }}">{{ categoria }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <p>{{categoria}}</p>
+    </section>
+
+    <section class="livros" id="livros">
+        {% for livro in livros %}
+        <div class="card">
+            <p hidden>{{ livro.0 }}</p>
+            <div class="livro_autor">
+                <h5>{{ livro.2 }}</h5>
+                <h4 class="titulo_livro">{{ livro.1 }}</h4>
+                <p>{{ livro.4}}</p>
+            </div>
+            <div class="avaliar">
+                <h5>Avaliações</h5>
+                <div class="rating">
+                    <input type="radio" id="star5_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="5">
+                    <label for="star5_{{ forloop.counter0 }}" title="5 estrelas">&#9733;</label>
+                    <input type="radio" id="star4_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="4">
+                    <label for="star4_{{ forloop.counter0 }}" title="4 estrelas">&#9733;</label>
+                    <input type="radio" id="star3_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="3">
+                    <label for="star3_{{ forloop.counter0 }}" title="3 estrelas">&#9733;</label>
+                    <input type="radio" id="star2_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="2">
+                    <label for="star2_{{ forloop.counter0 }}" title="2 estrelas">&#9733;</label>
+                    <input type="radio" id="star1_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="1">
+                    <label for="star1_{{ forloop.counter0 }}" title="1 estrela">&#9733;</label>
+                </div>
+            </div>
+            <button class="btn-reservar">RESERVAR</button>
+            <p>{{index}}</p>
+        </div>
+        {% endfor %}
+    </section>
+    {% endblock content %}
+</div>
+
+{% block js %}
+<script src="{% static './js/catalogo.js' %}"></script>
+{% endblock js %}

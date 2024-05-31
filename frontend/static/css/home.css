@@ -1,66 +1,138 @@
-.cabecalho{
-    display: flex;
-    justify-content: space-between;
-    padding: 15px;
+.containerHome {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 15px;
+  display: grid;
+  gap: 1rem;
 }
-.pesquisa input{
-    border-radius: 10px;
-    border: #8a2be2 solid 2px;
-    padding: 10px;
+
+.cabecalho {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  justify-self: center;
+  gap: 1rem;
 }
-.livros{
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap; 
-    width: 60vw; 
-    margin: 0 auto;
+
+select {
+  padding: 10px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #fff;
 }
-.card{
-    border: 2px solid #8a2be2; 
-    padding: 20px; 
-    border-radius: 10px; 
-    margin-bottom: 25px; 
-    max-width: 10rem;
+
+select:hover {
+  border-color: #666;
 }
-.avaliar{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+select:focus {
+  outline: none;
+  border-color: #8a2be2;
 }
-.avaliar h6{
-    margin: 0;
+
+select:disabled {
+  opacity: 0.5;
 }
-.btn-reservar{
-    border-radius: 10px; 
-    width: 10rem; 
-    padding: 5px; 
-    border: 2px solid #8a2be2; 
-    background-color: #ffffffcc; 
-    color: #8a2be2;
-    font-weight: bold;
+
+select option {
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  cursor: pointer;
 }
+
+select option:hover {
+  background-color: #8a2be2;
+}
+
+select option:checked {
+  background-color: #8a2be2;
+  color: #fff;
+}
+
+.title {
+  grid-column: 1/-1;
+  font-size: 1.3rem;
+}
+
+.pesquisa input {
+  border-radius: 10px;
+  border: #8a2be2 solid 2px;
+  padding: 10px;
+}
+
+.pesquisa input:focus {
+  outline: none;
+  border: #8a2be2 solid 2px;
+}
+
+.livros {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem 1rem;
+}
+
+.card {
+  border: 2px solid #8a2be2;
+  padding: 20px;
+  border-radius: 10px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  gap: 1rem;
+}
+
+.card h4 {
+  text-align: center;
+}
+
+.livro_autor {
+  display: grid;
+  gap: 0.3rem;
+  justify-items: center;
+  text-align: center;
+}
+
+.avaliar {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+}
+
 .rating {
-unicode-bidi: bidi-override;
-font-size: 2em;
-display: inline-flex;
-flex-direction: row-reverse;
+  unicode-bidi: bidi-override;
+  font-size: 2em;
+  display: inline-flex;
+  flex-direction: row-reverse;
 }
 
 .rating input {
-    display: none;
+  display: none;
 }
 
 .rating label {
-    color: #ddd;
-    cursor: pointer;
-    margin: 0 5px;
+  color: #ddd;
+  cursor: pointer;
 }
 
 .rating input:checked ~ label {
-    color: gold;
+  color: gold;
 }
 
 .rating label:hover,
 .rating label:hover ~ label {
-    color: gold;
+  color: gold;
+}
+
+.btn-reservar {
+  border-radius: 10px;
+  width: 10rem;
+  padding: 5px;
+  border: 2px solid #8a2be2;
+  background-color: #ffffffcc;
+  color: #8a2be2;
+  font-weight: bold;
 }

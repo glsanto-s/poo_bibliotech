@@ -24,6 +24,22 @@ class Catalogo():
         return 'error' 
     except KeyError as e:
       print('Error' + e)
+
+  def livros_por_categoria(self, nome_categoria):
+    try:
+      self.cur.execute(f"""SELECT L.id_livro, L.titulo, L.categoria, L.data_publicacao, E.nome AS Editora, A.nome as Autor 
+                  FROM livro AS L
+                  INNER JOIN editora AS E on E.id_editora = L.id_editora
+                  INNER JOIN autor AS A on A.id_autor = L.id_autor
+                  WHERE L.categoria = '{nome_categoria}'""")
+      livros = self.cur.fetchall()
+      self.conn.commit()
+      if(livros and len(livros) != 0):
+        return livros
+      else:
+        return 'error' 
+    except KeyError as e:
+      print('Error' + e)
         
 
   def exibir_autores(self, opcaoCerta = False):
