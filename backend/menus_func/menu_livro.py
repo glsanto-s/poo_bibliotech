@@ -8,23 +8,23 @@ def response(metodo):
     }
     return res
     
-def adicionar_livro(titulo, autor, editora, categoria, isbn, dataPublicacao, quantidade, tamanho, versao, formato):
+def adicionar_livro(titulo, idAutor, idEditora, categoria, isbn, dataPublicacao, quantidade, tamanho, versao, formato):
     retorno = response('adicionado')
-    idAutor = acoes_funcionario.Autor(
-        id=None,
-        nome = autor
-    )
-    idAutor_res = idAutor.procurar('nome',autor)
-    idEditora = acoes_funcionario.Editora(
-        id=None,
-        nome = editora
-    )
-    idEditora_res = idEditora.procurar('nome',editora)
+    # idAutor = acoes_funcionario.Autor(
+    #     id=None,
+    #     nome = autor
+    # )
+    # idAutor_res = idAutor.procurar('nome',autor)
+    # idEditora = acoes_funcionario.Editora(
+    #     id=None,
+    #     nome = editora
+    # )
+    # idEditora_res = idEditora.procurar('nome',editora)
 
-    if idAutor_res == "sem registro":
-        return 'Não encontramos o autor! Registre-o primeiro e depois tente adicionar o livro novamente.'
-    elif  idEditora_res == "sem registro":
-        return 'Não encontramos a editora! Registre-a primeiro e depois tente adicionar o livro novamente.'
+    # if idAutor_res == "sem registro":
+    #     return 'Não encontramos o autor! Registre-o primeiro e depois tente adicionar o livro novamente.'
+    # elif  idEditora_res == "sem registro":
+    #     return 'Não encontramos a editora! Registre-a primeiro e depois tente adicionar o livro novamente.'
     
     addLivro = acoes_funcionario.Livro( 
         id= None, 

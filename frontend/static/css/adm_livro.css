@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+.livro-container{
+    display: flex;
+    justify-content: space-between;
+}
+.op-container{
+    display: flex;
+}
+.form-section {
+    margin: 50px auto;
+    width: 48%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.select-form{
+    margin: 15px 0 0 15px;
+    padding: 3px;
+    width: 8rem;
+}
+select{
+    padding: 12px;
+    margin: 3px;
+    border: 1px solid #ccc;
+    
+    border-radius: 4px;
+}
+select option:hover {
+background-color: #163E5A;
+}
+
+select option:checked {
+background-color: #163E5A;
+color: #fff;
+}
+.procurar{
+    margin: 20px auto;
+}
+h2,h3 {
+    text-align: center;
+    color: #333;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+.input-field, .input-field select {
+    padding: 10px;
+    margin: 3px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #163E5A;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #36556A;
+}
+
+.errorlist{
+    display: none;
+}
