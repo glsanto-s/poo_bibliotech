@@ -100,7 +100,7 @@ def registrar(request):
         
     return render(request, 'templates/cadastro.html', {'form': form , 'message':mensagem})
 
-def config_livro(request):
+def acoes(request):
     sessaoADM = request.session.get('UserADM')
     if sessaoADM is not None:
         resAutor = ''
@@ -416,9 +416,10 @@ def config_livro(request):
             'resEditora':resEditora,
             'excluir': excluir,
             'editarLivro':editarLivro,
-            'editarAutorEditora':editarAutorEditora
+            'editarAutorEditora':editarAutorEditora,
+            'userADM': sessaoADM
         }
-        return render(request, 'templates/livro.html', params)
+        return render(request, 'templates/acoes.html', params)
     else:
         request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página desejada!'
         request.session.save()

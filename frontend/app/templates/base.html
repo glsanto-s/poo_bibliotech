@@ -11,12 +11,20 @@
 
 <body>
   <header>
+
     <nav class="nav-bar">
       <a href="#">Logo</a>
       <div class="menu">
-        <a href="#">Catálogo</a>
+        {% if idUser %}
+        <a href="{% url 'catalogo' %}">Catálogo</a>
         <a href="#">Contato</a>
         <a href="#">Perfil</a>
+        {% elif userADM %}
+        <a href="{% url 'catalogo' %}">Catálogo</a>
+        <a href="{% url 'acoes' %}">Ações</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Perfil</a>
+        {% endif %}
       </div>
     </nav>
   </header>
@@ -34,8 +42,7 @@
   </footer>
 
   {% block js %}
-
-  {% endblock js %}
+  <script src="{% static './js/base.js' %}"></script>
+  {% endblock js %} 
 </body>
-
 </html>
