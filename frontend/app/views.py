@@ -21,12 +21,11 @@ def categoria(request, categoria):
 
 def listar_livros(request):
     idUser = request.session.get('idUser')
-    if idUser is not None:
+    sessaoADM = request.session.get('UserADM')
+    if idUser is not None or sessaoADM is not None:
         livros = Catalogo().exibir_livros()
         categorias = listar_categorias(livros)
-        del request.session['idUser']
-        request.session.save()
-        return render(request, 'templates/catalogo.html', {'livros': livros, 'categorias': categorias})
+        return render(request, 'templates/catalogo.html', {'livros': livros, 'categorias': categorias,'idUser':idUser,'userADM':sessaoADM})
     else:
         request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página desejada!'
         request.session.save()
@@ -44,14 +43,14 @@ def logar(request):
 
                 validarUser = Usuario().logar(email,senha)
                 if validarUser["status"] == True:
-                    request.session['idUser'] = validarUser["id"]
-                    request.session.save()
                     if validarUser['adm'] == '0':
+                        request.session['idUser'] = validarUser["id"]
+                        request.session.save()
                         return redirect('catalogo')
                     else:
                         request.session['UserADM'] = validarUser['id']
-                        request.session['LoginMensagem'] = 'Tela de adm, ainda em andamento!'
                         request.session.save()
+                        return redirect('catalogo')
                 else:
                     request.session['LoginMensagem'] = validarUser["message"] 
                     request.session.save()
