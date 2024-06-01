@@ -12,14 +12,10 @@ class Base():
         
         valores_convertidos = []
         for item in dados:
-            if isinstance(item, str):
-                try:
-                    data = datetime.strptime(item, "%d/%m/%Y")
-                    valores_convertidos.append(f"'{data.strftime('%Y-%m-%d')}'")
-                except ValueError:
-                    valores_convertidos.append(f"'{item}'")
+            if isinstance(item, str) and len(item) == 10 and item[4] == '-' and item[7] == '-':
+                valores_convertidos.append(f"DATE('{item}')")
             else:
-                valores_convertidos.append(str(item))
+                valores_convertidos.append(f"'{item}'")
         valores = ', '.join(valores_convertidos)
         campos = ', '.join(self.campos)
 
@@ -29,11 +25,10 @@ class Base():
             conection = Conexao.get_connection()
             cursor = conection.cursor()
             query = f"INSERT INTO {self.tabela} ({campos}) VALUES ({valores})"
+
             cursor.execute(query)
             conection.commit()
-            
-            linhas_afetadas = cursor.rowcount
-            return f'Linhas adicionadas: {linhas_afetadas}'
+            return f'Sucesso'
         except KeyError as e:
             conection.rollback()
             print("Erro ao executar a consulta:", e)
