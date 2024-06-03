@@ -65,9 +65,14 @@
                     <label for="star1_{{ forloop.counter0 }}" title="1 estrela">&#9733;</label>
                 </div>
             </div>
-            <form action="{% url 'reservar' livro.0 %}" method="post">
+            <form action="{% url 'reservar' livro.0 %}" method="POST">
             {% csrf_token %}
             <button type="submit" class="btn-reservar">RESERVAR</button>
+            </form>
+            <p></p>
+            <form action="{% url 'emprestimo' livro.0 %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn-emprestimo">EMPRESTAR</button>
             </form>
             <p>{{index}}</p>
         </div>

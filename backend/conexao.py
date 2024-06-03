@@ -6,12 +6,11 @@ class Conexao:
         pass
     
     def get_connection():
-        db_config = settings.DATABASES['default']
         conn = psycopg2.connect(
-            dbname=db_config['NAME'],
-            user=db_config['USER'],
-            password=db_config['PASSWORD'],
-            host=db_config['HOST'],
-            port=db_config['PORT']
+            dbname='postgres',
+            user='postgres',
+            password='hyIee08`9?5j',
+            host='poo-db.c3k0q4komhkp.us-east-1.rds.amazonaws.com',
+            port=5432
         )
         return conn
