@@ -1,5 +1,7 @@
+__pycache__
 backend/__pycache__/
 backend/menus_func/__pycache__/
 frontend/app/__pycache__/
 frontend/app/migrations/__pycache__/
 frontend/configs/__pycache__/
+menus_func/__pycache__

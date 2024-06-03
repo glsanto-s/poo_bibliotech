@@ -70,7 +70,7 @@
   display: grid;
 }
 
-.perfil_form div {
+.perfil_form p {
   display: grid;
   gap: 0.4rem;
 }

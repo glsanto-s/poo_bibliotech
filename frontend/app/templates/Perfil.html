@@ -22,34 +22,12 @@
     {% endfor %}
   </ul>
   <button class="btn_alterar">Alterar dados +</button>
-  <form class="perfil_form">
-    <div>
-      <label for="nome">Nome</label>
-      <input type="text" name="nome" id="nome">
-    </div>
-
-    <div>
-      <label for="email">Email</label>
-      <input type="email" name="email" id="email">
-    </div>
-
-    <div>
-      <label for="cpf">CPF</label>
-      <input type="text" name="cpf" id="cpf">
-    </div>
-
-    <div>
-      <label for="data_nascimento">Data de nascimento</label>
-      <input type="date" name="data_nascimento" id="data_nascimento">
-    </div>
-
-    <div>
-      <label for="cpf">Telefone</label>
-      <input type="text" name="cpf" id="cpf">
-    </div>
-
+  <form class="perfil_form" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
     <button class="submitAlterar">Alterar</button>
   </form>
+
 
   {% else %}
   <p>Erro ao carregar informações</p>
