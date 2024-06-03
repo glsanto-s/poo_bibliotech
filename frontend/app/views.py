@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from backend.catalogo import Catalogo
-from backend.usuario import Usuario 
+from backend.usuario import Usuario, Cliente
 from backend.acoes_funcionario import Livro, LivroDigital, LivroFisico, Autor, Editora
-from .forms import CadastroForm, Login, CadastroLivro, ProcurarAutor,ProcurarEditora, Excluir, EditarLivro,EditarAutorEditora,CadastroDigital,CadastroFisico
+from .forms import CadastroForm, Login, CadastroLivro, ProcurarAutor,ProcurarEditora, Excluir, EditarLivro,EditarAutorEditora,CadastroDigital,CadastroFisico, AtualizarUsuario
+from django.contrib import messages
 
 def listar_categorias(livros):
     categorias = []
@@ -430,3 +431,41 @@ def _remover_chaves_vazias(dicionario):
     chaves_para_remover = [chave for chave, valor in dicionario.items() if not valor]
     for chave in chaves_para_remover:
         del dicionario[chave]
+
+
+def reservar(request, idlivro):
+    iduser = request.session.get('idUser')
+    if request.method == 'POST':
+        print(iduser)
+        message = Cliente().reservar(iduser, idlivro)
+        messages.info(request, message)
+        print(message)
+        return redirect('catalogo')
+    
+
+
+def atualizar_usuario(request):
+    iduser = request.session.get('idUser')
+    if request.method == 'POST':
+        form = AtualizarUsuario(request.POST)
+        if form.is_valid():
+            nome = form.cleaned_data['nome']
+            cpf = form.cleaned_data['cpf']
+            email = form.cleaned_data['email']
+            data_nascimento = form.cleaned_data['data_nascimento']
+            telefone = form.cleaned_data['telefone']
+            senha = form.cleaned_data['senha']
+        message = Usuario().atualizar_dados(
+            idusuario=iduser,
+            nome=nome,
+            cpf=cpf,
+            email=email,
+            data_nascimento=data_nascimento,
+            telefone=telefone,
+            senha=senha
+        )
+        print(message)
+    else:
+        form = AtualizarUsuario(request.POST)
+
+    return render(request, 'templates/update_usuario.html', {'form': form})

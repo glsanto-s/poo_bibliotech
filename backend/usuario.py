@@ -114,9 +114,19 @@ class Funcionario(Usuario)  :
         #             print(Fore.RED + "Opção inválida!")
 
 class Cliente(Usuario):
-   def __init__(self):
-     super().__init__()
-     self.cliente =  None
+    def __init__(self):
+        super().__init__()
+        self.cliente =  None
+
+    def reservar(self, idusuario, idlivro):
+        self.idlivro = idlivro
+        self.idusuario = idusuario
+        return self.sql_commands.criar_reserva(idusuario, idlivro)
+    
+    def cancelar_reserva(self, idusuario, idlivro):
+        self.idlivro = idlivro
+        self.idusuario = idusuario
+        return self.sql_commands.cancelar_reserva(idusuario, idlivro)
 
 #    def exibirInfo(self, idUsuario):
 #       self.cliente = exibir.ExibirInfo(idUsuario).exibir()

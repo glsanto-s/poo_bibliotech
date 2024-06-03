@@ -31,6 +31,17 @@
     </section>
 
     <section class="livros" id="livros">
+        {% if messages %}
+        <p hidden class="message"> {{message}} </p>
+        <script>
+            const message = document.querySelector(".message")
+            document.addEventListener('DOMContentLoaded', function() {
+                {% for message in messages %}
+                    alert("{{ message|escapejs }}");
+                {% endfor %}
+            });
+        </script>
+        {% endif %}
         {% for livro in livros %}
         <div class="card">
             <p hidden>{{ livro.0 }}</p>
@@ -54,7 +65,10 @@
                     <label for="star1_{{ forloop.counter0 }}" title="1 estrela">&#9733;</label>
                 </div>
             </div>
-            <button class="btn-reservar">RESERVAR</button>
+            <form action="{% url 'reservar' livro.0 %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-reservar">RESERVAR</button>
+            </form>
             <p>{{index}}</p>
         </div>
         {% endfor %}
