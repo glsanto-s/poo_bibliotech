@@ -25,7 +25,6 @@ def listar_livros(request):
     if idUser is not None:
         livros = Catalogo().exibir_livros()
         categorias = listar_categorias(livros)
-        del request.session['idUser']
         request.session.save()
         return render(request, 'templates/catalogo.html', {'livros': livros, 'categorias': categorias})
     else:
