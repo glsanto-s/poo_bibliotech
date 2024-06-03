@@ -69,6 +69,10 @@
                 {% csrf_token %}
                 <button type="submit" class="btn-reservar">RESERVAR</button>
             </form>
+            <form action="{% url 'emprestimo' livro.0 %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-emprestimo">EMPRESTAR</button>
+            </form>
             <p>{{index}}</p>
         </div>
         {% endfor %}

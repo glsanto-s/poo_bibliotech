@@ -45,7 +45,6 @@ def logar(request):
             if form.is_valid():
                 email = form.cleaned_data['email']
                 senha = form.cleaned_data['senha']
-
                 validarUser = Usuario().logar(email,senha)
                 if validarUser["status"] == True:
                     request.session['idUser'] = validarUser["id"]
@@ -442,6 +441,7 @@ def reservar(request, idlivro):
         print(message)
         return redirect('catalogo')
     
+
 def atualizar_usuario(request):
     idUser = request.session.get('idUser')
     if idUser is None:
@@ -473,6 +473,11 @@ def atualizar_usuario(request):
             return render(request, 'templates/perfil.html', {'form': form, 'usuario': usuario})
         else:
             return render(request, 'templates/perfil.html', {'form': form, 'usuario': False})
-
-
-
+        
+def emprestar(request, idlivro):
+    iduser = request.session.get('idUser')
+    if request.method == 'POST':
+        message = Cliente().emprestar(iduser, idlivro)
+        messages.info(request, message)
+        print(message)
+        return redirect('catalogo')

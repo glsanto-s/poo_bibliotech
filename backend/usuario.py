@@ -1,6 +1,7 @@
 from sql import SQL_COMMANDS
 import exibir as exibir
-import catalogo as catalogo 
+import catalogo as catalogo
+from datetime import datetime, timedelta
 
 
 class Usuario:
@@ -163,6 +164,15 @@ class Cliente(Usuario):
         self.idlivro = idlivro
         self.idusuario = idusuario
         return self.sql_commands.cancelar_reserva(idusuario, idlivro)
+    
+    def emprestar(self, idusuario, idlivro):
+        self.idlivro = idlivro
+        self.idusuario = idusuario
+        data_emprestimo = datetime.now().date()
+        data_validade = data_emprestimo + timedelta(weeks=2)
+        return self.sql_commands.emprestimo(idusuario, idlivro, data_validade)
+
+
 
 #    def exibirInfo(self, idUsuario):
 #       self.cliente = exibir.ExibirInfo(idUsuario).exibir()
