@@ -4,11 +4,15 @@
   box-sizing: border-box;
   text-decoration: none;
   list-style: none;
+  --cor-primaria: #163e5a;
+  --cor-secundaria: #36556a;
 }
 
 body {
   font-family: sans-serif;
   color: #000;
+  min-height: 100vh;
+  display: grid;
 }
 
 a {
@@ -45,6 +49,7 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: start;
+  align-self: end;
 }
 
 .redes {

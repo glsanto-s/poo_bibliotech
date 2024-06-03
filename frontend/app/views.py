@@ -3,6 +3,7 @@ from backend.catalogo import Catalogo
 from backend.usuario import Usuario 
 from .forms import CadastroForm
 from .forms import Login
+from backend.exibir import ExibirInfo
 
 def listar_categorias(livros):
     categorias = []
@@ -98,3 +99,15 @@ def registrar(request):
         request.session.save()
         
     return render(request, 'templates/cadastro.html', {'form': form , 'message':mensagem})
+
+def perfil(request):
+    idUser = request.session.get('idUser')
+    if idUser is None:
+       return redirect('login')
+    else:
+       usuario = ExibirInfo(idUser).exibir
+       if usuario:
+            return render(request, 'templates/perfil.html', {'idUser': idUser, 'usuario': usuario})
+       else:
+            return render(request, 'templates/perfil.html', {'idUser': idUser, 'usuario': False})
+           
