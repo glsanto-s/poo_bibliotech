@@ -105,6 +105,7 @@ class Base():
         """Multa os usuários que não devolveram o livro na data prevista.
         Se o usuário já estiver multado, o valor da multa é acrescentado em R$5.
         Se o usuário não estiver multado, é gerada uma multa de R$5."""
+        
         try:
             connection = Conexao.get_connection()
             cursor = connection.cursor()
