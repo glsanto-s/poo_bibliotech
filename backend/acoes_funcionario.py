@@ -1,5 +1,5 @@
-from conexao import Conexao 
-from datetime import datetime 
+from conexao import Conexao
+from datetime import datetime
 
 class Base():
     def __init__(self, tabela, campos):
@@ -101,6 +101,84 @@ class Base():
             conection.rollback()
             print("Erro ao executar a consulta:", e)
 
+    def multar(self) -> None:
+        """Multa os usuários que não devolveram o livro na data prevista.
+        Se o usuário já estiver multado, o valor da multa é acrescentado em R$5.
+        Se o usuário não estiver multado, é gerada uma multa de R$5."""
+        try:
+            connection = Conexao.get_connection()
+            cursor = connection.cursor()
+            data_atual = datetime.now().strftime('%Y-%m-%d')
+            
+            query = f"""SELECT * FROM emprestimo 
+                WHERE data_validade < '{data_atual}'"""
+            
+            cursor.execute(query)
+            inadimplentes = cursor.fetchall()
+            
+            for inadimplente in inadimplentes:
+                
+                query = f"""SELECT * FROM multa 
+                    WHERE id_emprestimo = {inadimplente[0]}"""
+                
+                cursor.execute(query)
+                multa = cursor.fetchone()
+
+                if multa:
+                    query = f"""UPDATE multa SET valor = valor + 5 
+                        WHERE id_emprestimo = {inadimplente[0]}"""
+                
+                else:
+                    query = f"""INSERT INTO multa (id_emprestimo, valor) 
+                        VALUES ({inadimplente[0]}, 5)"""
+                
+                cursor.execute(query)
+                connection.commit()
+    
+        except Exception as exc:
+            connection.rollback()
+            print(f'Erro ao executar a consulta: {exc}')
+
+    def devolucao(self, id: int, valor: float) -> None:
+        """Realiza a devolução do livro, e atualiza o status do empréstimo.
+        Se o usuário estiver multado, o valor da multa é 
+        descontado do valor a ser pago."""
+
+        try:
+            connection = Conexao.get_connection()
+            cursor = connection.cursor()
+
+            data_atual = datetime.now().strftime('%Y-%m-%d')
+            
+            query = f"""SELECT * FROM multa 
+                WHERE id_emprestimo = {id} AND
+                data_validade < '{data_atual}'"""
+            
+            cursor.execute(query)
+            multa = cursor.fetchone()
+            
+            if multa:
+                if not valor:
+                    print('Valor da multa não informado')
+                    return
+
+                query = f"""UPDATE multa SET valor = valor - {valor} 
+                    WHERE id_emprestimo = {id}"""
+            
+                cursor.execute(query)
+                connection.commit()
+
+            query = f"""UPDATE emprestimo 
+                SET data_devolucao = '{data_atual}',
+                status = 0
+                WHERE id_emprestimo = {id}"""
+
+            cursor.execute(query)
+            connection.commit()
+    
+        except Exception as exc:
+            connection.rollback()
+            print(f'Erro ao executar a consulta: {exc}')
 
 class Livro(Base):
     def __init__(self, titulo, idAutor, idEditora, categoria, isbn, dataPublicacao, id):
