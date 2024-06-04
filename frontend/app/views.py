@@ -18,18 +18,27 @@ def listar_categorias(livros):
     return categorias
 
 def categoria(request, categoria):
-    categorias = listar_categorias(Catalogo().exibir_livros())
-    livros = Catalogo().livros_por_categoria(categoria)
-    return render(request, 'templates/categoria.html', {'categoria_selecionada': categoria, 'categorias': categorias, 'livros': livros})
+    idUser = request.session.get('idUser')
+    sessaoADM = request.session.get('UserADM')
+    if idUser is not None or sessaoADM is not None:
+        categorias = listar_categorias(Catalogo().exibir_livros())
+        livros = Catalogo().livros_por_categoria(categoria)
+        return render(request, 'templates/categoria.html', {'categoria_selecionada': categoria, 'categorias': categorias, 'livros': livros, 'idUser':idUser,'userADM':sessaoADM})
+    else:
+        return redirect('login')
+
 
 def listar_livros(request):
     idUser = request.session.get('idUser')
-    print(idUser)
-    if idUser is not None:
+    sessaoADM = request.session.get('UserADM')
+    if idUser is not None or sessaoADM is not None:
         livros = Catalogo().exibir_livros()
         categorias = listar_categorias(livros)
         request.session.save()
-        return render(request, 'templates/catalogo.html', {'livros': livros, 'categorias': categorias})
+        if livros:
+             return render(request, 'templates/catalogo.html', {'livros': livros['livros'], 'livros_digitais': livros['livros_digitais'], 'livros_fisicos': livros['livros_fisicos'], 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM})
+        else:
+            return render(request, 'templates/catalogo.html', {'livros': False, 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM})
     else:
         request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página desejada!'
         request.session.save()
@@ -47,14 +56,14 @@ def logar(request):
                 senha = form.cleaned_data['senha']
                 validarUser = Usuario().logar(email,senha)
                 if validarUser["status"] == True:
-                    request.session['idUser'] = validarUser["id"]
-                    request.session.save()
                     if validarUser['adm'] == '0':
+                        request.session['idUser'] = validarUser["id"]
+                        request.session.save()
                         return redirect('catalogo')
                     else:
                         request.session['UserADM'] = validarUser['id']
-                        request.session['LoginMensagem'] = 'Tela de adm, ainda em andamento!'
                         request.session.save()
+                        return redirect('catalogo')
                 else:
                     request.session['LoginMensagem'] = validarUser["message"] 
                     request.session.save()
@@ -103,7 +112,7 @@ def registrar(request):
         
     return render(request, 'templates/cadastro.html', {'form': form , 'message':mensagem})
 
-def config_livro(request):
+def acoes(request):
     sessaoADM = request.session.get('UserADM')
     if sessaoADM is not None:
         resAutor = ''
@@ -419,9 +428,10 @@ def config_livro(request):
             'resEditora':resEditora,
             'excluir': excluir,
             'editarLivro':editarLivro,
-            'editarAutorEditora':editarAutorEditora
+            'editarAutorEditora':editarAutorEditora,
+            'userADM': sessaoADM
         }
-        return render(request, 'templates/livro.html', params)
+        return render(request, 'templates/acoes.html', params)
     else:
         request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página desejada!'
         request.session.save()
@@ -433,10 +443,14 @@ def _remover_chaves_vazias(dicionario):
         del dicionario[chave]
 
 def reservar(request, idlivro):
-    iduser = request.session.get('idUser')
+    idUser = request.session.get('idUser')
+    sessaoADM = request.session.get('UserADM')
+    if idUser is not None:
+        idGeral  = idUser
+    else:
+        idGeral = sessaoADM
     if request.method == 'POST':
-        print(iduser)
-        message = Cliente().reservar(iduser, idlivro)
+        message = Cliente().reservar(idGeral, idlivro)
         messages.info(request, message)
         print(message)
         return redirect('catalogo')
@@ -444,10 +458,15 @@ def reservar(request, idlivro):
 
 def atualizar_usuario(request):
     idUser = request.session.get('idUser')
-    if idUser is None:
-       return redirect('login')
-    else:
-        usuario = ExibirInfo(idUser).exibir
+    sessaoADM = request.session.get('UserADM')
+    if idUser is not None or sessaoADM is not None:
+        request.session.save()
+        if idUser is not None:
+            idGeral  = idUser
+        else:
+            idGeral = sessaoADM
+
+        usuario = ExibirInfo(idGeral).exibir
         if request.method == 'POST':
             form = AtualizarUsuario(request.POST)
             if form.is_valid():
@@ -458,7 +477,7 @@ def atualizar_usuario(request):
                 telefone = form.cleaned_data['telefone']
                 senha = form.cleaned_data['senha']
             message = Usuario().atualizar_dados(
-                idusuario=idUser,
+                idusuario=idGeral,
                 nome=nome,
                 cpf=cpf,
                 email=email,
@@ -470,14 +489,26 @@ def atualizar_usuario(request):
         else:
             form = AtualizarUsuario(request.POST)
         if usuario:
-            return render(request, 'templates/perfil.html', {'form': form, 'usuario': usuario})
+            return render(request, 'templates/perfil.html', {'form': form, 'usuario': usuario, 'idUser':idUser,'userADM':sessaoADM})
         else:
-            return render(request, 'templates/perfil.html', {'form': form, 'usuario': False})
+            return render(request, 'templates/perfil.html', {'form': form, 'usuario': False, 'idUser':idUser,'userADM':sessaoADM})
+    else:
+       return redirect('login')
+
         
-def emprestar(request, idlivro):
-    iduser = request.session.get('idUser')
+def emprestar(request, idlivro, tipolivro):
+    idUser = request.session.get('idUser')
+    sessaoADM = request.session.get('UserADM')
+    if idUser is not None:
+        idGeral  = idUser
+    else:
+        idGeral = sessaoADM
     if request.method == 'POST':
-        message = Cliente().emprestar(iduser, idlivro)
+        message = Cliente().emprestar(idGeral, idlivro, tipolivro)
         messages.info(request, message)
         print(message)
         return redirect('catalogo')
+
+def sair_login(request):
+    request.session.flush()
+    return redirect('login')

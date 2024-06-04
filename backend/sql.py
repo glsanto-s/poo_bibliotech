@@ -77,19 +77,19 @@ VALUES ({idusuario}, {idlivro}, (SELECT posicao_nova FROM posicao_nova))""")
         self.conn.commit()
         return "Reserva Cancelada!"
     
-    def emprestimo(self, idusuario, idlivro, data_validade):
+    def emprestimo(self, idusuario, idlivro, data_validade, tipolivro):
         self.cur.execute(f"""SELECT status from emprestimo WHERE id_usuario = {idusuario} AND status = '1'""")
         self.conn.commit()
         rows_validacao = self.cur.fetchall()
         num_rows = len(rows_validacao)  
-        if num_rows == 3:
+        if num_rows == 4:
             return 'Máximo de empréstimos realizados!'
         
         self.cur.execute(f"""SELECT * from emprestimo WHERE id_usuario = {idusuario} AND id_livro = {idlivro}""")
         rows = self.cur.fetchall()
         if rows == []:
-            self.cur.execute(f"""INSERT INTO emprestimo (id_usuario, id_livro, data_validade, status)
-                             VALUES ({idusuario}, {idlivro}, '{data_validade}', '1')""")
+            self.cur.execute(f"""INSERT INTO emprestimo (id_usuario, id_livro, data_validade, status, tipo_livro)
+                             VALUES ({idusuario}, {idlivro}, '{data_validade}', '1', '{tipolivro}')""")
             self.conn.commit()
             return f"Empréstimo Realizado! Sua data de devolução é {data_validade}"
 

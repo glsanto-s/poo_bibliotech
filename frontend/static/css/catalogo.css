@@ -144,3 +144,39 @@ select option:checked {
   color: #fff;
   background: var(--cor-primaria);
 }
+
+.tipo_livro {
+  display: flex;
+  justify-self: center;
+  gap: 1rem;
+  padding: 1rem 0 2rem 0;
+}
+
+.tipo_livro button {
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #000;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.5rem;
+}
+
+.tipo_livro button:hover {
+  border-bottom-color: var(--cor-primaria);
+}
+
+.btn_livro_fisico.ativo,
+.btn_livro_digital.ativo {
+  border-bottom-color: var(--cor-primaria) !important;
+}
+
+.livros_digitais,
+.livros_fisicos {
+  display: none;
+}
+
+.livros_fisicos.ativo,
+.livros_digitais.ativo {
+  display: grid;
+}

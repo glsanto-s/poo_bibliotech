@@ -15,8 +15,30 @@ body {
   display: grid;
 }
 
-a {
+.nav-bar img {
+  width: 64px;
+}
+
+.nav-bar a {
   color: inherit;
+  text-decoration: none;
+  position: relative;
+}
+
+.nav-bar a::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #163e5a;
+  transition: width 0.3s;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.nav-bar a:hover::after {
+  width: 100%;
 }
 
 img {
@@ -25,12 +47,13 @@ img {
 }
 
 .nav-bar {
-  background-color: #d9d3d3cc;
+  background-color: #75a4c667;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 24px;
   font-size: 20px;
+  box-shadow: 10px 10px 15px #888888;
 }
 
 .menu {
@@ -41,9 +64,12 @@ img {
 .menu a {
   padding: 0.3rem;
 }
+main {
+  min-height: 90vh;
+}
 
 footer {
-  background-color: #bbbbbb57;
+  background-color: #75a4c667;
   font-size: 14px;
   padding: 30px;
   display: flex;

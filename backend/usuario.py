@@ -165,12 +165,12 @@ class Cliente(Usuario):
         self.idusuario = idusuario
         return self.sql_commands.cancelar_reserva(idusuario, idlivro)
     
-    def emprestar(self, idusuario, idlivro):
+    def emprestar(self, idusuario, idlivro, tipolivro):
         self.idlivro = idlivro
         self.idusuario = idusuario
         data_emprestimo = datetime.now().date()
         data_validade = data_emprestimo + timedelta(weeks=2)
-        return self.sql_commands.emprestimo(idusuario, idlivro, data_validade)
+        return self.sql_commands.emprestimo(idusuario, idlivro, data_validade, tipolivro)
 
 
 
