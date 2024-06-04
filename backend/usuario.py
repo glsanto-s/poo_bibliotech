@@ -3,7 +3,6 @@ import exibir as exibir
 import catalogo as catalogo
 from datetime import datetime, timedelta
 
-
 class Usuario:
     def __init__(self):
         self.sql_commands = SQL_COMMANDS()
@@ -93,63 +92,6 @@ class Usuario:
         self.sql_commands.atualizar_usuario(campos_para_atualizar, valores)
         return 'Dados Atualizados!'
     
-class Funcionario(Usuario)  :   
-        def __init__(self):
-            self.funcionario = None 
-            super().__init__()
-        
-        # def exibirInfo(self, idUsuario):
-        #     self.funcionario = exibir.ExibirInfo(idUsuario).exibir()
-        #     if(self.funcionario and len(self.funcionario) != 0):
-        #         print('')
-        #         print(Fore.YELLOW + "----- Funcionário -----")
-        #         print(f"Nome: {self.funcionario[0][0]}")
-        #         print(f"CPF: {self.funcionario[0][1]}")
-        #         print(f"Email: {self.funcionario[0][2]}")
-        #         print(f"Data de nascimento: {self.funcionario[0][3]}")
-        #         print(f"Telefone: {self.funcionario[0][4]}")
-        #     else:
-        #         print(Fore.RED + 'Erro ao encontrar usuário.')
-
-   
-        # def exibirMenu(self, idUsuario):
-        #     while True:
-        #         print('')
-        #         print(Fore.BLUE + "----- Menu Principal -----")
-        #         print('1. Minha Conta')
-        #         print('2. Configurar Livros')
-        #         print('3. Catálogo de Livros')
-        #         print('4. Cadastro de Funcionários')
-        #         print('5. Dashboard')
-        #         print('0. Sair')
-
-        #         opcao = input("Escolha uma opção: ")
-
-        #         if opcao == '1':
-        #             while True:
-        #                 self.exibirInfo(idUsuario)
-        #                 print('0. Voltar')
-        #                 voltar = input()
-        #                 if voltar == "0":
-        #                     break
-
-        #         elif opcao == '2':
-        #             # menu_principal.main()
-        #             pass
-        #         elif opcao == '3':
-        #             catalogo.Catalogo()
-        #         elif opcao == '4':
-        #             print('')
-        #             from telas_login import Telas
-        #             Telas().cadastro_funcionario()
-        #         elif opcao == '5':
-        #             print(Fore.LIGHTYELLOW_EX + 'Opção ainda não configurada!')
-        #         elif opcao == '0':
-        #             print(Fore.BLUE + "Saindo...")
-        #             break
-        #         else:
-        #             print(Fore.RED + "Opção inválida!")
-
 class Cliente(Usuario):
     def __init__(self):
         super().__init__()
@@ -171,50 +113,3 @@ class Cliente(Usuario):
         data_emprestimo = datetime.now().date()
         data_validade = data_emprestimo + timedelta(weeks=2)
         return self.sql_commands.emprestimo(idusuario, idlivro, data_validade, tipolivro)
-
-
-
-#    def exibirInfo(self, idUsuario):
-#       self.cliente = exibir.ExibirInfo(idUsuario).exibir()
-#       if(self.cliente and len(self.cliente) != 0):
-#          print(Fore.YELLOW + "----- Usuário -----")
-#          print(f"Nome: {self.cliente[0][0]}")
-#          print(f"CPF: {self.cliente[0][1]}")
-#          print(f"Email: {self.cliente[0][2]}")
-#          print(f"Data de nascimento: {self.cliente[0][3]}")
-#          print(f"Telefone: {self.cliente[0][4]}")
-#       else:
-#          print(Fore.RED + 'Erro ao encontrar usuário.')
-
-
-#    def exibirMenu(self, idUsuario):
-
-    #   while True:
-    #      print(Fore.BLUE + "----- Menu Principal -----")
-    #      print('1. Minha Conta')
-    #      print('2. Catálogo de Livros')
-    #      print('3. Contato')
-    #      print('0. Sair')
-
-    #      opcao = input("Escolha uma opção: ")
-
-    #      if opcao == '1':
-    #         while True:
-    #            self.exibirInfo(idUsuario)
-    #            print('0. Voltar')
-    #            voltar = input()
-    #            if voltar == "0":
-    #               break
-               
-    #      elif opcao == '2':
-    #         catalogo.Catalogo()
-
-         
-    #      elif opcao == '3':
-    #          print(Fore.LIGHTYELLOW_EX + 'Opção ainda não configurada!')
-
-    #      elif opcao == '0':
-    #            print(Fore.BLUE + "Saindo...")
-    #            break
-    #      else:
-    #         print(Fore.RED + "Opção inválida!")
