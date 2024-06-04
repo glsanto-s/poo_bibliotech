@@ -98,3 +98,6 @@ def registrar(request):
         request.session.save()
         
     return render(request, 'templates/cadastro.html', {'form': form , 'message':mensagem})
+
+def historico (request):
+     return render(request, 'templates/historico.html', {})
