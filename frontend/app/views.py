@@ -5,6 +5,7 @@ from backend.acoes_funcionario import Livro, LivroDigital, LivroFisico, Autor, E
 from .forms import CadastroForm, Login, CadastroLivro, ProcurarAutor,ProcurarEditora, Excluir, EditarLivro,EditarAutorEditora,CadastroDigital,CadastroFisico, AtualizarUsuario
 from django.contrib import messages
 from backend.exibir import ExibirInfo
+from backend.dashboard import Dashboard
 
 
 def listar_categorias(livros):
@@ -152,13 +153,13 @@ def acoes(request):
                 if pesquisaLivro != "sem registro":
                     request.session['LivroMensagem'] = 'Livro já cadastrado no sistema!'
                     request.session.save()
-                    return redirect('config_livro')
+                    return redirect('acoes')
                 else:
                     addLivro.adicionar(addLivro.titulo,addLivro.idAutor,addLivro.idEditora,addLivro.categoria,addLivro.isbn,addLivro.dataPublicacao)
                     getIdLivro = addLivro.procurar('isbn', addLivro.isbn)
                     request.session['idCadastroLivro'] = getIdLivro[0]
                     request.session.save()
-                    return redirect('config_livro')
+                    return redirect('acoes')
             elif form_cadLivroD.is_valid():
                 idLivro = form_cadLivroD.cleaned_data['idLivroD']
                 tamanho = form_cadLivroD.cleaned_data['tamanho']
@@ -181,11 +182,11 @@ def acoes(request):
                                             addLivroDigital.formato)
                     request.session['LivroMensagem'] = 'Livro digital cadastrado com sucesso!'
                     request.session.save()
-                    return redirect('config_livro')
+                    return redirect('acoes')
                 else:
                     request.session['LivroMensagem'] = 'Livro não encontrado no sistema!'
                     request.session.save()
-                    return redirect('config_livro')                         
+                    return redirect('acoes')                         
             elif form_cadLivroF.is_valid():
                 idLivro = form_cadLivroF.cleaned_data['idLivroF']
                 quantidade = form_cadLivroF.cleaned_data['quantidade']
@@ -201,11 +202,11 @@ def acoes(request):
                     addLivroFisico.adicionar(addLivroFisico.id_livro,addLivroFisico.quantidade)
                     request.session['LivroMensagem'] = 'Quantidade cadastrado com sucesso!'
                     request.session.save()
-                    return redirect('config_livro')
+                    return redirect('acoes')
                 else:
                     request.session['LivroMensagem'] = 'Livro não encontrado no sistema!'
                     request.session.save()
-                    return redirect('config_livro') 
+                    return redirect('acoes') 
             elif formAutor.is_valid():
                 nome = formAutor.cleaned_data['nomeAutor']
                 idAutor = Autor(
@@ -217,22 +218,22 @@ def acoes(request):
                     if idAutor_res == "sem registro":
                         request.session['ediAutErro'] = 'Autor não encontrado no sistema!'
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
                     else:
                         request.session['autorSucesso'] = idAutor_res
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
                 elif 'cadastrar' in request.POST:
                     idAutor_res = idAutor.procurar('nome',idAutor.nome)
                     if idAutor_res == "sem registro":
                         idAutor.adicionar(idAutor.nome)
                         request.session['LivroMensagem'] = "Autor cadastrado com sucesso!"
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
                     else:
                         request.session['LivroMensagem'] = 'Autor já cadastrado no sistema!'
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
             elif formEditora.is_valid():
                 nome = formEditora.cleaned_data['nomeEditora']
                 
@@ -245,22 +246,22 @@ def acoes(request):
                     if idEditora_res == "sem registro":
                         request.session['ediAutErro'] = 'Editora não encontrada no sistema!'
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
                     else:
                         request.session['editoraSucesso'] = idEditora_res
                         request.session.save()
-                        return redirect('config_livro') 
+                        return redirect('acoes') 
                 elif 'cadastrar' in request.POST:
                     idEditora_res = idEditora.procurar('nome',idEditora.nome)
                     if idEditora_res == "sem registro":
                         idEditora.adicionar(idEditora.nome)
                         request.session['LivroMensagem'] = "Editora cadastrada com sucesso!"
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
                     else:
                         request.session['LivroMensagem'] = 'Editora já cadastrada no sistema!'
                         request.session.save()
-                        return redirect('config_livro') 
+                        return redirect('acoes') 
             elif excluir.is_valid():
                 idDeletar = excluir.cleaned_data['idDeletar']
                 
@@ -308,11 +309,11 @@ def acoes(request):
                         exLivro.excluir(exLivro.id)
                         request.session['LivroMensagem'] = 'Livro excluido do sistema!'
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
                     else:
                         request.session['LivroMensagem'] = 'Livro não encontrado no sistema!'
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
             elif editarAutorEditora.is_valid():
                 idAlterar = editarAutorEditora.cleaned_data['idAlterar']
                 nomeAlterar = editarAutorEditora.cleaned_data['nomeAlterar']
@@ -331,23 +332,23 @@ def acoes(request):
                     if idAutor_res == "sem registro":
                         request.session['LivroMensagem'] = "Autor não encontrado no sistema"
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
                     else:
                         altAutor.alterar(altAutor.id, nome = altAutor.nome)
                         request.session['LivroMensagem'] = 'Autor alterado com sucesso!'
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
                 elif 'editEditora' in request.POST:
                     idEditora_res = altEditora.procurar('id_editora',altEditora.id)
                     if idEditora_res == "sem registro":
                         request.session['LivroMensagem'] = "Editora não encontrada no sistema"
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
                     else:
                         altEditora.alterar(altEditora.id, nome = altEditora.nome)
                         request.session['LivroMensagem'] = 'Editora alterada com sucesso!'
                         request.session.save()
-                        return redirect('config_livro')
+                        return redirect('acoes')
             elif editarLivro.is_valid():
                 idLivro = editarLivro.cleaned_data['altIdLivro']
                 titulo = editarLivro.cleaned_data['altTitulo']
@@ -376,11 +377,11 @@ def acoes(request):
                     altLivro.alterar(altLivro.id,values)
                     request.session['LivroMensagem'] = "Livro alterado com sucesso!"
                     request.session.save()
-                    return redirect('config_livro')
+                    return redirect('acoes')
                 else:
                     request.session['LivroMensagem'] = "Livro não encontrado no sistema"
                     request.session.save()
-                    return redirect('config_livro')
+                    return redirect('acoes')
         
         else:
             form_cadLivro = CadastroLivro()
@@ -516,6 +517,14 @@ def sair_login(request):
 def dashboard(request):
     sessaoADM = request.session.get('UserADM')
     if sessaoADM is not None:
-        return render(request, 'templates/dashboard.html')
+        livros = Dashboard().totalTabela('livro')
+        editora = Dashboard().totalTabela('editora')
+        autor = Dashboard().totalTabela('autor')
+        emprestimos = Dashboard().infoValidade()
+        multas = Dashboard().infoMultas()
+
+
+
+        return render(request, 'templates/dashboard.html', {'userADM':sessaoADM, 'livros': livros, 'editora': editora, 'autor': autor, 'emprestimos': emprestimos, 'multas': multas})
     else:
         redirect('login')

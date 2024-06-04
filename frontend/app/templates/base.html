@@ -23,7 +23,7 @@
         {% elif userADM %}
         <a href="{% url 'catalogo' %}">Catálogo</a>
         <a href="{% url 'acoes' %}">Ações</a>
-        <a href="#">Dashboard</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
         <a href="{% url 'perfil' %}">Perfil</a>
         {% csrf_token %}
         <a href="{% url 'sair' %}">Sair</a>

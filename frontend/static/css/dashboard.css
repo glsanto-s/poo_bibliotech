@@ -1,0 +1,154 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  height: 100%;
+}
+
+.categorias {
+  display: grid;
+  align-items: start;
+  align-content: start;
+  width: 300px;
+  gap: 1rem;
+  background: var(--cor-secundaria);
+  padding: 1rem 0 1rem 3rem;
+}
+
+.categorias li {
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  padding: 2px 0;
+  border-bottom: 2px solid transparent;
+  justify-self: start;
+}
+
+.categorias li:hover {
+  border-bottom-color: #fff;
+}
+
+.btnLivros.ativo,
+.btnEditoras.ativo,
+.btnAutores.ativo,
+.btnEmprestimos.ativo,
+.btnMultas.ativo {
+  border-bottom-color: #fff;
+}
+
+.livros,
+.autores,
+.editoras,
+.emprestimos {
+  display: none;
+  padding: 2rem;
+  gap: 1rem;
+  align-items: start;
+  align-content: start;
+}
+
+.livros.ativo,
+.autores.ativo,
+.editoras.ativo,
+.emprestimos.ativo {
+  display: grid;
+}
+
+.total {
+  background: #75a4c667;
+  padding: 1rem;
+  border-radius: 16px;
+  align-self: start;
+}
+
+.total p {
+  color: var(--cor-primaria);
+  font-size: 2rem;
+}
+
+.btnListarLivros,
+.btnListarAutores,
+.btnListarEditoras {
+  max-width: max-content;
+  background: var(--cor-secundaria);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  border: none;
+  padding: 0.5rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.btnListarLivros:hover,
+.btnListarAutores:hover,
+.btnListarEditoras:hover {
+  box-shadow: 0 0 4px #000;
+  border: 2px solid var(--cor-secundaria);
+}
+
+.nomeLivros,
+.nomeAutores,
+.nomeEditoras {
+  display: none;
+  gap: 1rem;
+}
+
+.nomeLivros.ativo,
+.nomeAutores.ativo,
+.nomeEditoras.ativo {
+  display: grid;
+}
+
+.nomeLivros p,
+.nomeAutores p,
+.nomeEditoras p {
+  background: #75a4c667;
+  padding: 0.4rem 0.8rem;
+  border-radius: 16px;
+  align-self: start;
+  color: var(--cor-primaria);
+  font-size: 1.2rem;
+}
+
+.todosEmprestimos {
+  display: grid;
+  gap: 1rem;
+}
+
+.emprestimoContent {
+  background: #75a4c667;
+  padding: 0.4rem 0.8rem;
+  border-radius: 16px;
+  align-self: start;
+  color: var(--cor-primaria);
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.emprestimoContent.validade {
+  background: #ff5a56;
+}
+
+.emprestimoLivro,
+.emprestimoData {
+  display: grid;
+  gap: 0.5rem;
+  align-self: start;
+}
+
+.btnDevolver {
+  display: block;
+  padding: 0.5rem;
+  cursor: pointer;
+  background: var(--cor-secundaria);
+  color: #fff;
+  border-radius: 8px;
+  justify-self: end;
+  border: 2px solid transparent;
+}
+
+.btnDevolver:hover {
+  box-shadow: 0 0 4px #000;
+  border: 2px solid var(--cor-secundaria);
+}

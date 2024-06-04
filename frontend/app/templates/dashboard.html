@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+{% load static %}
+
+<title>Bibliotech | Dashboard</title>
+<link rel="stylesheet" href="{% static './css/dashboard.css' %}">
+{% endblock head %}
+
+
+{% block content %}
+<section class="dashboard">
+  <ul class="categorias">
+    <li class="btnLivros ">Livros</li>
+    <li class="btnEditoras">Editoras</li>
+    <li class="btnAutores">Autores</li>
+    <li class="btnEmprestimos ativo">Empréstimos</li>
+    <li class="btnMultas">Multas</li>
+  </ul>
+
+  <section class="livros  container">
+    <div class="total">
+      <p>Total de Livros: {{livros.total.0.0}}</p>
+    </div>
+    <button class="btnListarLivros">Listar Livros +</button>
+    <div class="nomeLivros">
+      {% for livro in livros.nome %}
+      <p>{{livro.0}}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="autores container">
+    <div class="total">
+      <p>Total de Autores: {{autor.total.0.0}}</p>
+    </div>
+    <button class="btnListarAutores">Listar Autores +</button>
+    <div class="nomeAutores">
+      {% for autor in autor.nome %}
+      <p>{{autor.0}}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="editoras container">
+    <div class="total">
+      <p>Total de Editoras: {{editora.total.0.0}}</p>
+    </div>
+    <button class="btnListarEditoras">Listar Editora +</button>
+    <div class="nomeEditoras">
+      {% for editora in editora.nome %}
+      <p>{{editora.0}}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="emprestimos ativo container ">
+    <div class="total">
+      <p>Empréstimos</p>
+    </div>
+    <div class="todosEmprestimos">
+      {% for emprestimo in emprestimos %}
+      <div class="emprestimoContent">
+        <div class="emprestimoLivro">
+          <p>Cliente: {{emprestimo.5}}</p>
+          <p>Livro: {{emprestimo.6}}</p>
+        </div>
+        <div class="emprestimoData">
+          <p>Data de validade: <span>{{emprestimo.1}}</span></p>
+          <p>Data do empréstimo: {{emprestimo.2}}</p>
+          {% if emprestimo.4 == '1' %}
+          <a href="#" class="btnDevolver">Devolver</a>
+          {% else %}
+          <p>Data da devolução: {{emprestimo.3}}</p>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</section>
+
+
+{% endblock content %}
+
+
+{% block js %}
+<script src="{% static './js/dashboard.js' %}"></script>
+{% endblock js %}
