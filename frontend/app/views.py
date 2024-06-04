@@ -512,3 +512,10 @@ def emprestar(request, idlivro, tipolivro):
 def sair_login(request):
     request.session.flush()
     return redirect('login')
+
+def dashboard(request):
+    sessaoADM = request.session.get('UserADM')
+    if sessaoADM is not None:
+        return render(request, 'templates/dashboard.html')
+    else:
+        redirect('login')

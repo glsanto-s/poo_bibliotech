@@ -14,6 +14,7 @@ class Dashboard:
             return total
         except Exception as e:
             print('Error' + e)
+            return False
     
     def infoValidade(self):
         try:
@@ -24,6 +25,8 @@ class Dashboard:
             return emprestimos
         except Exception as e:
             print('Error' + e)
+            return False
+
     
     def infoMultas(self):
         try:
@@ -37,3 +40,4 @@ class Dashboard:
             return res_info
         except Exception as e:
             print('Error' + e)
+            return False
