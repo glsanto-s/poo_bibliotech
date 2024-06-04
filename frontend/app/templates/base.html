@@ -11,12 +11,23 @@
 
 <body>
   <header>
+
     <nav class="nav-bar">
-      <a href="#">Logo</a>
+      <img src="{% static './img/logo.webp' %}" alt="">
       <div class="menu">
-        <a href="#">Catálogo</a>
-        <a href="#">Contato</a>
-        <a href="#">Perfil</a>
+        {% if idUser %}
+        <a href="{% url 'catalogo' %}">Catálogo</a>
+        <a href="{% url 'perfil' %}">Perfil</a>
+        {% csrf_token %}
+        <a href="{% url 'sair' %}">Sair</a>
+        {% elif userADM %}
+        <a href="{% url 'catalogo' %}">Catálogo</a>
+        <a href="{% url 'acoes' %}">Ações</a>
+        <a href="#">Dashboard</a>
+        <a href="{% url 'perfil' %}">Perfil</a>
+        {% csrf_token %}
+        <a href="{% url 'sair' %}">Sair</a>
+        {% endif %}
       </div>
     </nav>
   </header>
@@ -34,7 +45,7 @@
   </footer>
 
   {% block js %}
-
+  <script src="{% static './js/base.js' %}"></script>
   {% endblock js %}
 </body>
 

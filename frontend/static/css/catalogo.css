@@ -30,7 +30,7 @@ select:hover {
 
 select:focus {
   outline: none;
-  border-color: #8a2be2;
+  border-color: var(--cor-primaria);
 }
 
 select:disabled {
@@ -45,11 +45,11 @@ select option {
 }
 
 select option:hover {
-  background-color: #8a2be2;
+  background-color: var(--cor-primaria);
 }
 
 select option:checked {
-  background-color: #8a2be2;
+  background-color: var(--cor-primaria);
   color: #fff;
 }
 
@@ -60,13 +60,13 @@ select option:checked {
 
 .pesquisa input {
   border-radius: 10px;
-  border: #8a2be2 solid 2px;
+  border: var(--cor-primaria) solid 2px;
   padding: 10px;
 }
 
 .pesquisa input:focus {
   outline: none;
-  border: #8a2be2 solid 2px;
+  border: var(--cor-primaria) solid 2px;
 }
 
 .livros {
@@ -76,7 +76,7 @@ select option:checked {
 }
 
 .card {
-  border: 2px solid #8a2be2;
+  border: 2px solid var(--cor-primaria);
   padding: 20px;
   border-radius: 10px;
   display: grid;
@@ -127,12 +127,56 @@ select option:checked {
   color: gold;
 }
 
-.btn-reservar {
+.btn-reservar,
+.btn-emprestimo {
   border-radius: 10px;
   width: 10rem;
   padding: 5px;
-  border: 2px solid #8a2be2;
+  border: 2px solid var(--cor-primaria);
   background-color: #ffffffcc;
-  color: #8a2be2;
+  color: var(--cor-primaria);
   font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-reservar:hover,
+.btn-emprestimo:hover {
+  color: #fff;
+  background: var(--cor-primaria);
+}
+
+.tipo_livro {
+  display: flex;
+  justify-self: center;
+  gap: 1rem;
+  padding: 1rem 0 2rem 0;
+}
+
+.tipo_livro button {
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #000;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.5rem;
+}
+
+.tipo_livro button:hover {
+  border-bottom-color: var(--cor-primaria);
+}
+
+.btn_livro_fisico.ativo,
+.btn_livro_digital.ativo {
+  border-bottom-color: var(--cor-primaria) !important;
+}
+
+.livros_digitais,
+.livros_fisicos {
+  display: none;
+}
+
+.livros_fisicos.ativo,
+.livros_digitais.ativo {
+  display: grid;
 }

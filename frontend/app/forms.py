@@ -55,3 +55,11 @@ class EditarAutorEditora(forms.Form):
     idAlterar = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input-field', 'placeholder':'Id'}), label='Id')
     nomeAlterar = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'input-field', 'placeholder':'Nome'}),
                                   label= 'Nome')
+    
+class AtualizarUsuario(forms.Form):
+    nome = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'input-field', 'placeholder': 'Nome'}))
+    cpf = forms.CharField(max_length=11, required=False, widget=forms.TextInput(attrs={'class': 'input-field', 'placeholder': 'CPF'}))
+    email = forms.EmailField(required=False, widget=forms.EmailInput(attrs={'class': 'input-field', 'placeholder': 'Email'}))
+    senha = forms.CharField(min_length=8, required=False, widget=forms.PasswordInput(attrs={'class': 'input-field', 'placeholder': 'Senha'}))
+    data_nascimento = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'input-field', 'type': 'date', 'placeholder': 'Data de Nascimento'}))
+    telefone = forms.CharField(max_length=15, required=False, widget=forms.TextInput(attrs={'class': 'input-field', 'placeholder': 'Telefone'}))   

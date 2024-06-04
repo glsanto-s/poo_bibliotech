@@ -30,8 +30,24 @@
         <p>{{categoria}}</p>
     </section>
 
-    <section class="livros" id="livros">
-        {% for livro in livros %}
+    <section class="tipo_livro">
+        <button class="btn_livro_fisico ativo">Livros Físicos</button>
+        <button class="btn_livro_digital">Livros Digitais</button>
+    </section>
+
+    <section class="livros livros_fisicos ativo" id="livros_fisico">
+        {% if messages %}
+        <p hidden class="message"> {{message}} </p>
+        <script>
+            const message = document.querySelector(".message")
+            document.addEventListener('DOMContentLoaded', function () {
+                {% for message in messages %}
+                alert("{{ message|escapejs }}");
+                {% endfor %}
+            });
+        </script>
+        {% endif %}
+        {% for livro in livros_fisicos %}
         <div class="card">
             <p hidden>{{ livro.0 }}</p>
             <div class="livro_autor">
@@ -42,19 +58,73 @@
             <div class="avaliar">
                 <h5>Avaliações</h5>
                 <div class="rating">
-                    <input type="radio" id="star5_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="5">
-                    <label for="star5_{{ forloop.counter0 }}" title="5 estrelas">&#9733;</label>
-                    <input type="radio" id="star4_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="4">
-                    <label for="star4_{{ forloop.counter0 }}" title="4 estrelas">&#9733;</label>
-                    <input type="radio" id="star3_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="3">
-                    <label for="star3_{{ forloop.counter0 }}" title="3 estrelas">&#9733;</label>
-                    <input type="radio" id="star2_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="2">
-                    <label for="star2_{{ forloop.counter0 }}" title="2 estrelas">&#9733;</label>
-                    <input type="radio" id="star1_{{ forloop.counter0 }}" name="rating_{{ forloop.counter0 }}" value="1">
-                    <label for="star1_{{ forloop.counter0 }}" title="1 estrela">&#9733;</label>
+                    <input type="radio" id="star5_{{ forloop.counter0 }}0" name="rating_{{ forloop.counter0 }}0" value="5">
+                    <label for="star5_{{ forloop.counter0 }}0" title="5 estrelas">&#9733;</label>
+                    <input type="radio" id="star4_{{ forloop.counter0 }}0" name="rating_{{ forloop.counter0 }}0" value="4">
+                    <label for="star4_{{ forloop.counter0 }}0" title="4 estrelas">&#9733;</label>
+                    <input type="radio" id="star3_{{ forloop.counter0 }}0" name="rating_{{ forloop.counter0 }}0" value="3">
+                    <label for="star3_{{ forloop.counter0 }}0" title="3 estrelas">&#9733;</label>
+                    <input type="radio" id="star2_{{ forloop.counter0 }}0" name="rating_{{ forloop.counter0 }}0" value="2">
+                    <label for="star2_{{ forloop.counter0 }}0" title="2 estrelas">&#9733;</label>
+                    <input type="radio" id="star1_{{ forloop.counter0 }}0" name="rating_{{ forloop.counter0 }}0" value="1">
+                    <label for="star1_{{ forloop.counter0 }}0" title="1 estrela">&#9733;</label>
                 </div>
             </div>
-            <button class="btn-reservar">RESERVAR</button>
+            <form action="{% url 'reservar' livro.0 %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn-reservar">RESERVAR</button>
+            </form>
+            {% if livro.6 > 0 %}
+            <form action="{% url 'emprestimo' livro.0 0 %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-emprestimo">EMPRESTAR</button>
+            </form>
+            {% endif %}
+            <p>{{index}}</p>
+        </div>
+        {% endfor %}
+    </section>
+
+
+    <section class="livros livros_digitais" id="livros_digitais">
+        {% if messages %}
+        <p hidden class="message"> {{message}} </p>
+        <script>
+            const message = document.querySelector(".message")
+            document.addEventListener('DOMContentLoaded', function () {
+                {% for message in messages %}
+                alert("{{ message|escapejs }}");
+                {% endfor %}
+            });
+        </script>
+        {% endif %}
+        {% for livro in livros_digitais %}
+        <div class="card">
+            <p hidden>{{ livro.0 }}</p>
+            <div class="livro_autor">
+                <h5>{{ livro.2 }}</h5>
+                <h4 class="titulo_livro">{{ livro.1 }}</h4>
+                <p>{{ livro.4}}</p>
+            </div>
+            <div class="avaliar">
+                <h5>Avaliações</h5>
+                <div class="rating">
+                    <input type="radio" id="star5_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="5">
+                    <label for="star5_{{ forloop.counter0 }}1" title="5 estrelas">&#9733;</label>
+                    <input type="radio" id="star4_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="4">
+                    <label for="star4_{{ forloop.counter0 }}1" title="4 estrelas">&#9733;</label>
+                    <input type="radio" id="star3_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="3">
+                    <label for="star3_{{ forloop.counter0 }}1" title="3 estrelas">&#9733;</label>
+                    <input type="radio" id="star2_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="2">
+                    <label for="star2_{{ forloop.counter0 }}1" title="2 estrelas">&#9733;</label>
+                    <input type="radio" id="star1_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="1">
+                    <label for="star1_{{ forloop.counter0 }}1" title="1 estrela">&#9733;</label>
+                </div>
+            </div>
+            <form action="{% url 'emprestimo' livro.0 1 %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-emprestimo">EMPRESTAR</button>
+            </form>
             <p>{{index}}</p>
         </div>
         {% endfor %}
