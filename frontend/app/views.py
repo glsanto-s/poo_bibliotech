@@ -25,7 +25,8 @@ def categoria(request, categoria):
         livroCategoria = Catalogo().exibir_livros()
         categorias = listar_categorias(livroCategoria['livros'])
         livros = Catalogo().livros_por_categoria(categoria)
-        return render(request, 'templates/categoria.html', {'categoria_selecionada': categoria, 'categorias': categorias, 'livros': livros['livros'],'livros_digitais': livros['livros_digitais'], 'livros_fisicos': livros['livros_fisicos'], 'idUser':idUser,'userADM':sessaoADM,  'avaliacao': livros['avaliacao']})
+        print(livros['avaliacao'])
+        return render(request, 'templates/categoria.html', {'categoria_selecionada': categoria, 'categorias': categorias, 'livros': livros['livros'],'livros_digitais': livros['livros_digitais'], 'livros_fisicos': livros['livros_fisicos'], 'idUser':idUser,'userADM':sessaoADM, 'avaliacao': livros['avaliacao']})
     else:
         return redirect('login')
 
@@ -37,6 +38,7 @@ def listar_livros(request):
         categorias = listar_categorias(livros['livros'])
         request.session.save()
         if livros:
+             print(livros['avaliacao'])
              return render(request, 'templates/catalogo.html', {'livros': livros['livros'], 'livros_digitais': livros['livros_digitais'], 'livros_fisicos': livros['livros_fisicos'], 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM, 'avaliacao': livros['avaliacao']})
         else:
             return render(request, 'templates/catalogo.html', {'livros': False, 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM,  'avaliacao': livros['avaliacao']})

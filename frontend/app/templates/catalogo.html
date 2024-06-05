@@ -57,10 +57,10 @@
             </div>
             <div class="avaliar">
                 <h5>Avaliações</h5>
-                {% for avaliar in avaliacao %}
-                {% if avaliar.2 == livro.0 and avaliar.1|stringformat:"s" == idUser|stringformat:"s" %}
-                <p class="nota_avaliacao">{{avaliar.3}}</p>
-                {% endif %}
+                 {% for avaliar in avaliacao %}
+                    {% if avaliar.0 == livro.0%}
+                    <p class="nota_avaliacao">{{avaliar.1|floatformat:1}}</p>
+                    {% endif %}
 
                 {% endfor %}
                 <div class="rating">
@@ -120,12 +120,12 @@
             </div>
             <div class="avaliar">
                 <h5>Avaliações</h5>
-                {% for avaliar in avaliacao %}
-                {% if avaliar.1 == livro.0%}
-                <p class="nota_avaliacao">{{avaliar.2}}</p>
-                {% endif %}
+                     {% for avaliar in avaliacao %}
+                        {% if avaliar.0 == livro.0%}
+                        <p class="nota_avaliacao">{{avaliar.1|floatformat:1}}</p>
+                        {% endif %}
 
-                {% endfor %}
+                    {% endfor %}
                 <div class="rating">
                     <span class="livro_usuario">
                         <h1>{{idUser}}</h1>

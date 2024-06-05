@@ -49,8 +49,8 @@
       </div>
       <div class="avaliar">
         {% for avaliar in avaliacao %}
-        {% if avaliar.2 == livro.0 and avaliar.1|stringformat:"s" == idUser|stringformat:"s" %}
-        <p class="nota_avaliacao">{{avaliar.3}}</p>
+        {% if avaliar.0 == livro.0%}
+        <p class="nota_avaliacao">{{avaliar.1|floatformat:1}}</p>
         {% endif %}
 
         {% endfor %}
@@ -100,8 +100,8 @@
       <div class="avaliar">
         <h5>Avaliações</h5>
         {% for avaliar in avaliacao %}
-        {% if avaliar.2 == livro.0 and avaliar.1|stringformat:"s" == idUser|stringformat:"s" %}
-        <p class="nota_avaliacao">{{avaliar.3}}</p>
+        {% if avaliar.0 == livro.0%}
+        <p class="nota_avaliacao">{{avaliar.1|floatformat:1}}</p>
         {% endif %}
 
         {% endfor %}

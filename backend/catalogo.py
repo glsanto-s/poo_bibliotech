@@ -35,8 +35,8 @@ class Catalogo():
       livros_digitais = self.cur.fetchall()
       self.conn.commit()
 
-      self.cur.execute(f"""SELECT *
-        FROM avaliacao """)
+      self.cur.execute(f"""SELECT id_livro, avg(nota)
+                           FROM avaliacao group by id_livro""")
       avaliacao = self.cur.fetchall()
       self.conn.commit()
 
@@ -76,14 +76,13 @@ class Catalogo():
       livros_digitais = self.cur.fetchall()
       self.conn.commit()
 
-      self.cur.execute(f"""SELECT id_livro, avg(CAST(nota AS INT)) as Media
-FROM avaliacao group by id_livro""")
+      self.cur.execute(f"""SELECT id_livro, avg(nota)
+                           FROM avaliacao group by id_livro""")
       avaliacao = self.cur.fetchall()
       self.conn.commit()
 
-
       if(livros and len(livros) != 0 and livros_fisicos and len(livros_fisicos) != 0 and livros_digitais and len(livros_digitais) != 0):
-        return {'livros': livros, 'livros_fisicos': livros_fisicos, 'livros_digitais': livros_digitais, 'avaliacao': avaliacao}
+        return {'livros': livros, 'livros_fisicos': livros_fisicos, 'livros_digitais': livros_digitais, 'avaliacao':avaliacao}
       else:
         return 'error' 
     except KeyError as e:
