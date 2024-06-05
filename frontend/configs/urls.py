@@ -21,6 +21,5 @@ urlpatterns = [
     path('catalogo/', listar_livros, name='catalogo'),
     path('catalogo/<categoria>/', categoria, name='categoria'),
     path('' , logar, name='login'),
-    path('cadastro/', registrar, name='cadastro'),
-    path('historico/', historico, name= 'historico')
+    path('cadastro/', registrar, name='cadastro')
 ]
