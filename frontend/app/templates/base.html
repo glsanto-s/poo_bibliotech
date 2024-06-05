@@ -18,6 +18,7 @@
         {% if idUser %}
         <a href="{% url 'catalogo' %}">Catálogo</a>
         <a href="{% url 'perfil' %}">Perfil</a>
+        <a href="{% url 'historico' %}">Historico</a>
         {% csrf_token %}
         <a href="{% url 'sair' %}">Sair</a>
         {% elif userADM %}

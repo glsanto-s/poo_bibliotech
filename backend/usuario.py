@@ -113,3 +113,6 @@ class Cliente(Usuario):
         data_emprestimo = datetime.now().date()
         data_validade = data_emprestimo + timedelta(weeks=2)
         return self.sql_commands.emprestimo(idusuario, idlivro, data_validade, tipolivro)
+    
+    def avaliar(self, idlivro, idusuario, valor):
+        return self.sql_commands.avaliar(idlivro, idusuario, valor)

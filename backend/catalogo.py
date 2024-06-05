@@ -35,10 +35,15 @@ class Catalogo():
       livros_digitais = self.cur.fetchall()
       self.conn.commit()
 
+      self.cur.execute(f"""SELECT *
+        FROM avaliacao """)
+      avaliacao = self.cur.fetchall()
+      self.conn.commit()
+
 
 
       if(livros and len(livros) != 0 and livros_fisicos and len(livros_fisicos) != 0 and livros_digitais and len(livros_digitais) != 0):
-        return {'livros': livros, 'livros_fisicos': livros_fisicos, 'livros_digitais': livros_digitais}
+        return {'livros': livros, 'livros_fisicos': livros_fisicos, 'livros_digitais': livros_digitais, 'avaliacao': avaliacao}
       else:
         return 'error' 
     except KeyError as e:
@@ -52,9 +57,33 @@ class Catalogo():
                   INNER JOIN autor AS A on A.id_autor = L.id_autor
                   WHERE L.categoria = '{nome_categoria}'""")
       livros = self.cur.fetchall()
+
+      self.cur.execute(f"""SELECT L.id_livro, L.titulo, L.categoria, L.data_publicacao, E.nome AS Editora, A.nome as Autor 
+                FROM livro AS L
+                INNER JOIN livro_fisico AS LF on LF.id_livro = L.id_livro
+                INNER JOIN editora AS E on E.id_editora = L.id_editora
+                INNER JOIN autor AS A on A.id_autor = L.id_autor
+                WHERE L.categoria = '{nome_categoria}'""")
+      livros_fisicos = self.cur.fetchall()
       self.conn.commit()
-      if(livros and len(livros) != 0):
-        return livros
+
+      self.cur.execute(f"""SELECT L.id_livro, L.titulo, L.categoria, L.data_publicacao, E.nome AS Editora, A.nome as Autor 
+          FROM livro AS L
+          INNER JOIN livro_digital AS LD on LD.id_livro = L.id_livro
+          INNER JOIN editora AS E on E.id_editora = L.id_editora
+          INNER JOIN autor AS A on A.id_autor = L.id_autor
+          WHERE L.categoria = '{nome_categoria}'""")
+      livros_digitais = self.cur.fetchall()
+      self.conn.commit()
+
+      self.cur.execute(f"""SELECT *
+        FROM avaliacao """)
+      avaliacao = self.cur.fetchall()
+      self.conn.commit()
+
+
+      if(livros and len(livros) != 0 and livros_fisicos and len(livros_fisicos) != 0 and livros_digitais and len(livros_digitais) != 0):
+        return {'livros': livros, 'livros_fisicos': livros_fisicos, 'livros_digitais': livros_digitais, 'avaliacao': avaliacao}
       else:
         return 'error' 
     except KeyError as e:

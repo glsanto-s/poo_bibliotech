@@ -46,6 +46,24 @@ window.addEventListener('load', () => {
   }
 
   pesquisarTitulo.addEventListener('keyup', handleTitle);
+
+  const inputAvaliar = document.querySelectorAll('.avaliar input');
+
+  function handleAvaliar(e) {
+    const valor = e.target.value;
+    const elementoPai = e.target.parentElement;
+    const idUsuario = elementoPai.querySelector('.livro_usuario h1');
+    const idLivro = elementoPai.querySelector('.livro_usuario p');
+    const urlLocal = window.location.href.replace(/\/catalogo\/.*/, '');
+
+    window.location.assign(
+      `${urlLocal}/avaliar/${idLivro.innerText}/${idUsuario.innerText}/${valor}`,
+    );
+  }
+
+  inputAvaliar.forEach((input) => {
+    input.addEventListener('click', handleAvaliar);
+  });
 });
 
 function handleDigital() {
@@ -64,3 +82,5 @@ function handleFisico() {
 
 btnLivroDigital.addEventListener('click', handleDigital);
 btnLivroFisico.addEventListener('click', handleFisico);
+
+btnLivroDigital.nextElementSibling;

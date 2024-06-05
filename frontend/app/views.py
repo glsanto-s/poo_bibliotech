@@ -22,24 +22,24 @@ def categoria(request, categoria):
     idUser = request.session.get('idUser')
     sessaoADM = request.session.get('UserADM')
     if idUser is not None or sessaoADM is not None:
-        categorias = listar_categorias(Catalogo().exibir_livros())
+        livroCategoria = Catalogo().exibir_livros()
+        categorias = listar_categorias(livroCategoria['livros'])
         livros = Catalogo().livros_por_categoria(categoria)
-        return render(request, 'templates/categoria.html', {'categoria_selecionada': categoria, 'categorias': categorias, 'livros': livros, 'idUser':idUser,'userADM':sessaoADM})
+        return render(request, 'templates/categoria.html', {'categoria_selecionada': categoria, 'categorias': categorias, 'livros': livros['livros'],'livros_digitais': livros['livros_digitais'], 'livros_fisicos': livros['livros_fisicos'], 'idUser':idUser,'userADM':sessaoADM,  'avaliacao': livros['avaliacao']})
     else:
         return redirect('login')
-
 
 def listar_livros(request):
     idUser = request.session.get('idUser')
     sessaoADM = request.session.get('UserADM')
     if idUser is not None or sessaoADM is not None:
         livros = Catalogo().exibir_livros()
-        categorias = listar_categorias(livros)
+        categorias = listar_categorias(livros['livros'])
         request.session.save()
         if livros:
-             return render(request, 'templates/catalogo.html', {'livros': livros['livros'], 'livros_digitais': livros['livros_digitais'], 'livros_fisicos': livros['livros_fisicos'], 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM})
+             return render(request, 'templates/catalogo.html', {'livros': livros['livros'], 'livros_digitais': livros['livros_digitais'], 'livros_fisicos': livros['livros_fisicos'], 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM, 'avaliacao': livros['avaliacao']})
         else:
-            return render(request, 'templates/catalogo.html', {'livros': False, 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM})
+            return render(request, 'templates/catalogo.html', {'livros': False, 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM,  'avaliacao': livros['avaliacao']})
     else:
         request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página desejada!'
         request.session.save()
@@ -416,7 +416,7 @@ def acoes(request):
             del request.session['autorSucesso']
             request.session.save()
         params = {
-            'livros': livros,
+            'livros': livros['livros'],
             'form_cadLivro':form_cadLivro,
             'form_cadLivroD':form_cadLivroD,
             'form_cadLivroF':form_cadLivroF,
@@ -456,7 +456,6 @@ def reservar(request, idlivro):
         print(message)
         return redirect('catalogo')
     
-
 def atualizar_usuario(request):
     idUser = request.session.get('idUser')
     sessaoADM = request.session.get('UserADM')
@@ -496,7 +495,6 @@ def atualizar_usuario(request):
     else:
        return redirect('login')
 
-        
 def emprestar(request, idlivro, tipolivro):
     idUser = request.session.get('idUser')
     sessaoADM = request.session.get('UserADM')
@@ -526,7 +524,6 @@ def dashboard(request):
         return render(request, 'templates/dashboard.html', {'userADM':sessaoADM, 'livros': livros, 'editora': editora, 'autor': autor, 'emprestimos': emprestimos, 'multas': multas})
     else:
         redirect('login')
-
 
 def devolucao(request, idemprestimo):
     sessaoADM = request.session.get('UserADM')
@@ -559,5 +556,24 @@ def multar(request):
     else:
         redirect('login')
 
+def historico (request):
+    
+    iduser = request.session.get('idUser') 
+    if iduser is not None:
+        exibir_historico= ExibirInfo (idUsuario=iduser)
+        resp= exibir_historico.exibir_emprestimos
+        #del request.session['idUser']
+        #request.session.save()
+        return render(request, 'templates/historico.html', {'emprestimo': resp, 'idUser': iduser})
+    else:
+        request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página desejada!'
+        request.session.save()
+        return redirect('login')
 
-
+def avaliar(request, idlivro, idusuario, valor):
+    iduser = request.session.get('idUser')
+    if iduser is not None:
+        avaliacao = Cliente().avaliar(idlivro, idusuario, valor)
+        return redirect('catalogo')
+    else:
+        redirect ('login')

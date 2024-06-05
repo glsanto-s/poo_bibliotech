@@ -57,7 +57,17 @@
             </div>
             <div class="avaliar">
                 <h5>Avaliações</h5>
+                {% for avaliar in avaliacao %}
+                {% if avaliar.2 == livro.0 and avaliar.1|stringformat:"s" == idUser|stringformat:"s" %}
+                <p class="nota_avaliacao">{{avaliar.3}}</p>
+                {% endif %}
+
+                {% endfor %}
                 <div class="rating">
+                    <span class="livro_usuario">
+                        <h1>{{idUser}}</h1>
+                        <p>{{livro.0}}</p>
+                    </span>
                     <input type="radio" id="star5_{{ forloop.counter0 }}0" name="rating_{{ forloop.counter0 }}0" value="5">
                     <label for="star5_{{ forloop.counter0 }}0" title="5 estrelas">&#9733;</label>
                     <input type="radio" id="star4_{{ forloop.counter0 }}0" name="rating_{{ forloop.counter0 }}0" value="4">
@@ -108,15 +118,30 @@
             </div>
             <div class="avaliar">
                 <h5>Avaliações</h5>
+                {% for avaliar in avaliacao %}
+                {% if avaliar.2 == livro.0 and avaliar.1|stringformat:"s" == idUser|stringformat:"s" %}
+                <p class="nota_avaliacao">{{avaliar.3}}</p>
+                {% endif %}
+
+                {% endfor %}
                 <div class="rating">
+                    <span class="livro_usuario">
+                        <h1>{{idUser}}</h1>
+                        <p>{{livro.0}}</p>
+                    </span>
+
                     <input type="radio" id="star5_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="5">
                     <label for="star5_{{ forloop.counter0 }}1" title="5 estrelas">&#9733;</label>
+
                     <input type="radio" id="star4_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="4">
                     <label for="star4_{{ forloop.counter0 }}1" title="4 estrelas">&#9733;</label>
+
                     <input type="radio" id="star3_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="3">
                     <label for="star3_{{ forloop.counter0 }}1" title="3 estrelas">&#9733;</label>
+
                     <input type="radio" id="star2_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="2">
                     <label for="star2_{{ forloop.counter0 }}1" title="2 estrelas">&#9733;</label>
+
                     <input type="radio" id="star1_{{ forloop.counter0 }}1" name="rating_{{ forloop.counter0 }}1" value="1">
                     <label for="star1_{{ forloop.counter0 }}1" title="1 estrela">&#9733;</label>
                 </div>

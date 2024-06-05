@@ -107,3 +107,28 @@ WHERE posicao > {posicao} and id_livro = {idlivro}""")
         else:
             self.conn.commit()
             return "Empréstimo já realizado!"
+        
+    def avaliar(self, idlivro, idusuario, valor):
+        try:
+            self.cur.execute(f"""SELECT * from avaliacao 
+                                WHERE id_usuario = {idusuario} AND id_livro = {idlivro}""")
+            
+            self.conn.commit()
+            rows_avaliacao = self.cur.fetchall()
+
+
+            if len(rows_avaliacao) > 0:
+                self.cur.execute(f"""UPDATE avaliacao SET nota = '{valor}'
+                                WHERE id_usuario = {idusuario} and id_livro = {idlivro}""")
+                self.conn.commit()
+            else:
+                self.cur.execute(f"""INSERT INTO avaliacao (id_usuario, id_livro, nota) 
+                                VALUES ({idusuario}, {idlivro}, '{valor}')""")
+                self.conn.commit()
+                
+            return 'Livro avaliado com sucesso'
+        except Exception as exc:
+            print(f'Erro ao executar a consulta: {exc}')
+            return False
+
+
