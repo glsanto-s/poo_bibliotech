@@ -18,5 +18,15 @@ class ExibirInfo:
       print('Error' + e)
       return False
 
+  def exibir_emprestimos(self):
+    self.cur.execute(f"""SELECT * FROM emprestimo WHERE id_usuario = {self.idUsuario} ORDER BY data_emprestimo ASC""")
+    emprestimos = self.cur.fetchall()
+    return emprestimos
+
+  def exibir_reservas(self):
+    self.cur.execute(f"""SELECT * FROM reserva WHERE id_usuario = {self.idUsuario} ORDER BY data_reserva ASC""")
+    reservas = self.cur.fetchall()
+    return reservas
+
 
 
