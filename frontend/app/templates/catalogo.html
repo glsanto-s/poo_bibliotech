@@ -80,16 +80,18 @@
                     <label for="star1_{{ forloop.counter0 }}0" title="1 estrela">&#9733;</label>
                 </div>
             </div>
+            {% if userADM is None%}
             <form action="{% url 'reservar' livro.0 %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn-reservar">RESERVAR</button>
             </form>
-            {% if livro.6 > 0 %}
+                {% if livro.6 > 0 %}
             <form action="{% url 'emprestimo' livro.0 0 %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="btn-emprestimo">EMPRESTAR</button>
             </form>
-            {% endif %}
+                {% endif %}
+            {%endif%}
             <p>{{index}}</p>
         </div>
         {% endfor %}
@@ -119,8 +121,8 @@
             <div class="avaliar">
                 <h5>Avaliações</h5>
                 {% for avaliar in avaliacao %}
-                {% if avaliar.2 == livro.0 and avaliar.1|stringformat:"s" == idUser|stringformat:"s" %}
-                <p class="nota_avaliacao">{{avaliar.3}}</p>
+                {% if avaliar.1 == livro.0%}
+                <p class="nota_avaliacao">{{avaliar.2}}</p>
                 {% endif %}
 
                 {% endfor %}
@@ -146,10 +148,12 @@
                     <label for="star1_{{ forloop.counter0 }}1" title="1 estrela">&#9733;</label>
                 </div>
             </div>
+            {% if userADM is None%}
             <form action="{% url 'emprestimo' livro.0 1 %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="btn-emprestimo">EMPRESTAR</button>
             </form>
+            {% endif%}
             <p>{{index}}</p>
         </div>
         {% endfor %}

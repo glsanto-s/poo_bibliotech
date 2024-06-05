@@ -562,8 +562,6 @@ def historico (request):
     if iduser is not None:
         exibir_historico= ExibirInfo (idUsuario=iduser)
         resp= exibir_historico.exibir_emprestimos
-        #del request.session['idUser']
-        #request.session.save()
         return render(request, 'templates/historico.html', {'emprestimo': resp, 'idUser': iduser})
     else:
         request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página desejada!'
