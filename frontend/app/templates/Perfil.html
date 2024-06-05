@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% load static %}
+<title>Bibliotech | Perfil</title>
+<link rel="stylesheet" href="{% static './css/perfil.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<section class="perfil">
+
+  {% if usuario %}
+  <h1 class="perfil_titulo">Dados pessoais</h1>
+  <ul class="perfil_dados">
+    {% for user in usuario %}
+    <li>Nome: <span>{{ user.0 }}</span></li>
+    <li>CPF: <span>{{ user.1 }}</span></li>
+    <li>Email: <span>{{ user.2 }}</span></li>
+    <li>Data de nascimento: <span>{{ user.3 }}</span></li>
+    <li>Telefone: <span>{{ user.4 }}</span></li>
+    {% endfor %}
+  </ul>
+  <button class="btn_alterar">Alterar dados +</button>
+  <form class="perfil_form" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="submitAlterar">Alterar</button>
+  </form>
+
+
+  {% else %}
+  <p>Erro ao carregar informações</p>
+  {% endif %}
+</section>
+
+{% block js %}
+<script src="{% static './js/perfil.js' %}"></script>
+{% endblock js %}
+
+{% endblock content %}

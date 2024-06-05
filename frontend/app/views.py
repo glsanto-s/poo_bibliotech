@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from backend.catalogo import Catalogo
-from backend.usuario import Usuario 
-from .forms import CadastroForm
-from .forms import Login
+from backend.usuario import Usuario, Cliente
+from backend.acoes_funcionario import Livro, LivroDigital, LivroFisico, Autor, Editora
+from backend.exibir import ExibirInfo
+from .forms import CadastroForm, Login, CadastroLivro, ProcurarAutor,ProcurarEditora, Excluir, EditarLivro,EditarAutorEditora,CadastroDigital,CadastroFisico, AtualizarUsuario
+from django.contrib import messages
+from backend.exibir import ExibirInfo
+
 
 def listar_categorias(livros):
     categorias = []
@@ -14,26 +18,36 @@ def listar_categorias(livros):
             categorias.add(livro[2])
     return categorias
 
-
 def categoria(request, categoria):
-    categorias = listar_categorias(Catalogo().exibir_livros())
-    livros = Catalogo().livros_por_categoria(categoria)
-    return render(request, 'templates/categoria.html', {'categoria_selecionada': categoria, 'categorias': categorias, 'livros': livros})
+    idUser = request.session.get('idUser')
+    sessaoADM = request.session.get('UserADM')
+    if idUser is not None or sessaoADM is not None:
+        categorias = listar_categorias(Catalogo().exibir_livros())
+        livros = Catalogo().livros_por_categoria(categoria)
+        return render(request, 'templates/categoria.html', {'categoria_selecionada': categoria, 'categorias': categorias, 'livros': livros, 'idUser':idUser,'userADM':sessaoADM})
+    else:
+        return redirect('login')
 
 
 def listar_livros(request):
     idUser = request.session.get('idUser')
-    if idUser is not None:
+    sessaoADM = request.session.get('UserADM')
+    if idUser is not None or sessaoADM is not None:
         livros = Catalogo().exibir_livros()
         categorias = listar_categorias(livros)
-        return render(request, 'templates/catalogo.html', {'livros': livros, 'categorias': categorias})
+        request.session.save()
+        if livros:
+             return render(request, 'templates/catalogo.html', {'livros': livros['livros'], 'livros_digitais': livros['livros_digitais'], 'livros_fisicos': livros['livros_fisicos'], 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM})
+        else:
+            return render(request, 'templates/catalogo.html', {'livros': False, 'categorias': categorias, 'idUser':idUser,'userADM':sessaoADM})
     else:
-        request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página de catálogo.'
+        request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página desejada!'
         request.session.save()
         return redirect('login')
     
 def logar(request):
     idUser = request.session.get('idUser')
+    print(idUser)
     if idUser is None:
         mensagem = ''
         if request.method == 'POST':
@@ -41,16 +55,16 @@ def logar(request):
             if form.is_valid():
                 email = form.cleaned_data['email']
                 senha = form.cleaned_data['senha']
-
                 validarUser = Usuario().logar(email,senha)
                 if validarUser["status"] == True:
-                    request.session['idUser'] = validarUser["id"]
-                    request.session.save()
                     if validarUser['adm'] == '0':
+                        request.session['idUser'] = validarUser["id"]
+                        request.session.save()
                         return redirect('catalogo')
                     else:
-                        request.session['LoginMensagem'] = 'Tela de adm, ainda em andamento!'
+                        request.session['UserADM'] = validarUser['id']
                         request.session.save()
+                        return redirect('catalogo')
                 else:
                     request.session['LoginMensagem'] = validarUser["message"] 
                     request.session.save()
@@ -99,5 +113,18 @@ def registrar(request):
         
     return render(request, 'templates/cadastro.html', {'form': form , 'message':mensagem})
 
+
 def historico (request):
-     return render(request, 'templates/historico.html', {})
+    
+    iduser = request.session.get('idUser') 
+    if iduser is not None:
+        exibir_historico= ExibirInfo (idUsuario=iduser)
+        resp= exibir_historico.exibir_emprestimos
+        #del request.session['idUser']
+        #request.session.save()
+        return render(request, 'templates/historico.html', {'emprestimo': resp})
+    else:
+        request.session['LoginMensagem'] = 'Você precisa estar logado para acessar a página desejada!'
+        request.session.save()
+        return redirect('login')
+    

@@ -1,0 +1,141 @@
+.perfil {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 15px;
+  display: grid;
+  gap: 1rem;
+}
+
+.perfil_titulo {
+  font-size: 2rem;
+  justify-self: center;
+  color: var(--cor-primaria);
+}
+
+.perfil_titulo::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 4px;
+  background: var(--cor-secundaria);
+}
+
+.perfil_dados {
+  display: grid;
+  gap: 1rem;
+}
+
+.perfil_dados li {
+  font-size: 1.4rem;
+  justify-self: start;
+}
+
+.perfil_dados li::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 6px;
+  margin-top: 4px;
+  border-radius: 4px;
+  background: var(--cor-secundaria);
+}
+
+.perfil_dados li span {
+  color: var(--cor-secundaria);
+}
+
+.perfil_form {
+  background-color: var(--cor-primaria);
+  padding: 1rem;
+  border-radius: 4px;
+  display: grid;
+  gap: 1rem;
+  justify-self: start;
+  width: 50%;
+  display: none;
+  opacity: 0;
+  transform: translate3d(0, -30px, 0);
+  animation: anime 0.3s forwards;
+}
+
+@keyframes anime {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.perfil_form.ativo {
+  display: grid;
+}
+
+.perfil_form p {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.perfil_form label {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.perfil_form label::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 4px;
+  margin-top: 2px;
+  border-radius: 4px;
+  background: var(--cor-secundaria);
+}
+
+.perfil_form input {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: none;
+  border: 2px solid transparent;
+}
+
+.perfil_form input:focus,
+.perfil_form input:hover {
+  outline: none;
+  box-shadow: 0 0 8px #000;
+  border: 2px solid var(--cor-secundaria);
+}
+
+.btn_alterar {
+  display: block;
+  padding: 0.5rem;
+  background: var(--cor-primaria);
+  border-radius: 4px;
+  cursor: pointer;
+  max-width: max-content;
+  justify-self: start;
+  color: #fff;
+  font-size: 1.2rem;
+  border: none;
+  border: 2px solid transparent;
+}
+
+.btn_alterar:hover {
+  box-shadow: 0 0 4px #000;
+  border: 2px solid var(--cor-secundaria);
+}
+
+.submitAlterar {
+  padding: 0.5rem;
+  background: #fff;
+  color: var(--cor-primaria);
+  max-width: max-content;
+  justify-self: end;
+  font-size: 1.2rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.submitAlterar:hover {
+  border-color: var(--cor-secundaria);
+  box-shadow: 0 0 4px #000;
+}

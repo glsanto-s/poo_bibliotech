@@ -1,0 +1,158 @@
+{% extends 'base.html' %} {% block head %} {% load static %}
+<title>Bibliotech | ADM Ações</title>
+<link rel="stylesheet" href="{% static './css/adm_livro.css' %}" />
+{% endblock head %} {% block content %}
+
+<div class="livro-container">
+  <div class="form-section">
+    <div class="op-container">
+      <form class="select-form" id="formOp" method="POST">
+        {% csrf_token %}
+        <select id="select-op" name="select-op">
+          <option value="livro" selected>Livro</option>
+          <option value="livroD">Livro Digital</option>
+          <option value="livroF">Livro Físico</option>
+          <option value="autor">Autor</option>
+          <option value="editora">Editora</option>
+        </select>
+      </form>
+      <form class="select-form" id="formMetodo" method="POST">
+        {% csrf_token %}
+        <select id="select-metodo" name="select-metodo">
+          <option value="adicionar" selected>Adicionar</option>
+          <option value="editar">Editar</option>
+          <option value="excluir">Excluir</option>
+        </select>
+      </form>
+    </div>
+
+    <div id="addLivro">
+        <form method="POST">
+          {% csrf_token %} {{ form_cadLivro.as_p }}
+          <button type="submit">Avançar</button>
+        </form>
+    </div>
+
+    <div hidden id="cadLivroD">
+        <form method="POST">
+            {% csrf_token %} {{ form_cadLivroD.as_p }}
+            <button type="submit" name="cadastrar">Cadastrar</button>
+        </form>
+    </div>
+
+    <div hidden id="cadLivroF">
+        <form method="POST">
+            {% csrf_token %} {{ form_cadLivroF.as_p }}
+            <button type="submit" name="cadastrar">Cadastrar</button>
+        </form>
+    </div>
+    
+    <div hidden id="cadAutor">
+        <form method="POST">
+            {% csrf_token %} {{ formAutor.as_p }}
+            <button type="submit" name="cadastrar">Cadastrar</button>
+        </form>
+    </div>
+    
+    <div hidden id="cadEditora">
+        <form method="POST">
+            {% csrf_token %} {{ formEditora.as_p }}
+            <button type="submit" name="cadastrar">Cadastrar</button>
+        </form>
+    </div>
+    
+    <div hidden id="editLivro">
+        <form method="POST">
+            {% csrf_token %} {{ editarLivro.as_p }}
+            <button type="submit">Editar Livro</button>
+          </form>
+    </div>
+    <div hidden id="editAutor">
+        <form method="POST">
+            {% csrf_token %} {{ editarAutorEditora.as_p }}
+            <button type="submit" name="editAutor">Editar Autor</button>
+          </form>
+    </div>
+    <div hidden id="editEditora">
+        <form method="POST">
+            {% csrf_token %} {{ editarAutorEditora.as_p }}
+            <button type="submit" name="editEditora">Editar Editora</button>
+          </form>
+    </div>
+
+    <div hidden id="delLivro">
+        <form method="POST">
+          {% csrf_token %} {{ excluir.as_p }}
+          <button type="submit" name="delLivro">Excluir Livro</button>
+        </form>
+    </div>
+
+    <div hidden id="delAutor">
+        <form method="POST">
+          {% csrf_token %} {{ excluir.as_p }}
+          <button type="submit" name="delAutor">Excluir Livro</button>
+        </form>
+    </div>
+
+    <div hidden id="delEditora">
+        <form method="POST">
+          {% csrf_token %} {{ excluir.as_p }}
+          <button type="submit" name="delEditora">Excluir Livro</button>
+        </form>
+    </div>
+    {% if mensagemLivro %}
+    <br>
+    <div class="alert alert-warning">{{ mensagemLivro }}</div>
+    {% endif %} 
+  </div>
+  <div class="form-section">
+    {% if ediAutErro %}
+    <div class="alert alert-warning">{{ ediAutErro }}</div>
+    {% endif %}
+    <div class="procurar">
+      <h3>Procurar Editora</h3>
+      <form method="POST">
+        {% csrf_token %} {{ formEditora.as_p }} {% if resEditora %}
+        <br />
+        <div class="alert alert-warning">Id Editora: {{ resEditora.0 }}</div>
+        <div class="alert alert-warning">Nomes Editora: {{ resEditora.1 }}</div>
+        {% endif %}
+        <button type="submit" name="procurar">Procurar</button>
+      </form>
+    </div>
+    <div class="procurar">
+      <h3>Procurar Autor</h3>
+      <form method="POST">
+        {% csrf_token %} {{ formAutor.as_p }} {% if resAutor %}
+        <br />
+        <div class="alert alert-warning">Id Autor: {{ resAutor.0 }}</div>
+        <div class="alert alert-warning">Nome Autor: {{ resAutor.1 }}</div>
+        {% endif %}
+        <button type="submit" name="procurar">Procurar</button>
+      </form>
+    </div>
+    <div class="procurar">
+      <h3>Procurar Livro</h3>
+      <div class="pesquisa">
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Titulo do livro..."
+        />
+      </div>
+      <section hidden id="livros">
+        {% for livro in livros %}
+        <div class="card">
+          <p>ID: {{ livro.0 }}</p>
+          <div class="livro_autor">
+            <h4 class="titulo_livro">{{ livro.1 }}</h4>
+          </div>
+        </div>
+        {% endfor %}
+      </section>
+    </div>
+  </div>
+</div>
+{% block js %}
+<script src="{% static './js/config_adm.js' %}"></script>
+{% endblock js %} {% endblock content %}

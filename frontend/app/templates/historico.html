@@ -9,14 +9,17 @@
 {% block content %}
 
 <div class="conteudo">
-
     <h1> Histórico</h1>
-    <p>Titulo do livro: </p>
-    <p>Categoria: </p>
-    <p>Data Validade: </p>
-    <p>Data Empréstimo: </p>
-    <p>Data devolução: </p>
-    <p>Status: </p>
+    {% for dado in emprestimo %} 
+    <div class="hist"> 
+        <p>Titulo do livro: {{dado.0}} </p>
+        <p>Categoria: {{dado.1}} </p>
+        <p>Data Validade: {{dado.2}}</p>
+        <p>Data Empréstimo: {{dado.3}}</p>
+        <p>Data devolução: {{dado.4}} </p>
+        <p>Status: {{dado.5}}</p>
+    </div>
+    {% endfor %}
 </div>
 
 {% endblock content %}
