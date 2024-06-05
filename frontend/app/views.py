@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from backend.catalogo import Catalogo
 from backend.usuario import Usuario, Cliente
-from backend.acoes_funcionario import Livro, LivroDigital, LivroFisico, Autor, Editora
+from backend.acoes_funcionario import Livro, LivroDigital, LivroFisico, Autor, Editora, Base
 from .forms import CadastroForm, Login, CadastroLivro, ProcurarAutor,ProcurarEditora, Excluir, EditarLivro,EditarAutorEditora,CadastroDigital,CadastroFisico, AtualizarUsuario
 from django.contrib import messages
 from backend.exibir import ExibirInfo
@@ -523,8 +523,41 @@ def dashboard(request):
         emprestimos = Dashboard().infoValidade()
         multas = Dashboard().infoMultas()
 
-
-
         return render(request, 'templates/dashboard.html', {'userADM':sessaoADM, 'livros': livros, 'editora': editora, 'autor': autor, 'emprestimos': emprestimos, 'multas': multas})
     else:
         redirect('login')
+
+
+def devolucao(request, idemprestimo):
+    sessaoADM = request.session.get('UserADM')
+
+    if sessaoADM is not None:
+        devolvido = Base('o','o').devolucao(idemprestimo)
+        if devolvido:
+            message = 'Livro devolvido com sucesso!'
+        else:
+            message = 'Erro ao devolver o livro.'
+        storage = messages.get_messages(request)
+        for m in storage:
+            pass
+        messages.success(request, message)
+        return redirect('dashboard')
+        
+    else:
+        redirect('login')
+
+def multar(request):
+    sessaoADM = request.session.get('UserADM')
+
+    if sessaoADM is not None:
+        message = Base('o','o').multar()
+        storage = messages.get_messages(request)
+        for m in storage:
+            pass
+        messages.success(request, message)
+        return redirect('dashboard')
+    else:
+        redirect('login')
+
+
+

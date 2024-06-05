@@ -3,6 +3,7 @@ window.addEventListener('load', () => {
   const sectionAutores = document.querySelector('.autores');
   const sectionEditoras = document.querySelector('.editoras');
   const sectionEmprestimos = document.querySelector('.emprestimos');
+  const sectionMultas = document.querySelector('.multas');
 
   const btnLivros = document.querySelector('.btnLivros');
   const btnEditoras = document.querySelector('.btnEditoras');
@@ -61,24 +62,52 @@ window.addEventListener('load', () => {
 
     const contentEmprestimo = document.querySelectorAll('.emprestimoContent');
     contentEmprestimo.forEach((content) => {
-      const data = document.querySelector('.emprestimoData span');
+      const data = content.querySelector('.emprestimoData span');
       const dataValidade = new Date(data.innerText);
       const dataAtual = new Date();
+      const status = content.querySelector('.emprestimoData');
 
-      if (dataAtual > dataValidade) {
+      if (dataAtual > dataValidade && status.dataset.status === '1') {
         content.classList.add('validade');
+        content.classList.remove('devolucao');
       } else {
         content.classList.remove('validade');
+        if (status.dataset.status === '0') {
+          content.classList.add('devolucao');
+        }
       }
-      console.log(dataValidade);
     });
   }
   emprestimo();
+
+  function multas() {
+    sections.forEach((item) => {
+      item.classList.remove('ativo');
+    });
+    sectionMultas.classList.add('ativo');
+
+    buttons.forEach((btn) => {
+      btn.classList.remove('ativo');
+    });
+    btnMultas.classList.add('ativo');
+
+    const contentMultas = document.querySelectorAll('.multasContent');
+    contentMultas.forEach((content) => {
+      const valorMulta = content.querySelector('.multasValor span');
+      if (valorMulta.innerText == '0') {
+        content.classList.add('inativa');
+      } else {
+        content.classList.remove('inativa');
+      }
+    });
+  }
 
   btnLivros.addEventListener('click', livros);
   btnAutores.addEventListener('click', autores);
   btnEditoras.addEventListener('click', editoras);
   btnEmprestimos.addEventListener('click', emprestimo);
+  btnEmprestimos.addEventListener('click', emprestimo);
+  btnMultas.addEventListener('click', multas);
 
   const btnListarAutores = document.querySelector('.btnListarAutores');
   const nomeAutores = document.querySelector('.nomeAutores');

@@ -111,35 +111,41 @@ class Base():
             data_atual = datetime.now().strftime('%Y-%m-%d')
             
             query = f"""SELECT * FROM emprestimo 
-                WHERE data_validade < '{data_atual}'"""
-            
+                WHERE data_validade < '{data_atual} ' AND status = '1'"""
+        
             cursor.execute(query)
             inadimplentes = cursor.fetchall()
+ 
             
-            for inadimplente in inadimplentes:
-                
-                query = f"""SELECT * FROM multa 
-                    WHERE id_emprestimo = {inadimplente[0]}"""
-                
-                cursor.execute(query)
-                multa = cursor.fetchone()
-
-                if multa:
-                    query = f"""UPDATE multa SET valor = valor + 5 
+            if len(inadimplentes) <= 0:
+                return 'Não existem empréstimos para serem multados'
+            else:
+                for inadimplente in inadimplentes:
+                    
+                    query = f"""SELECT * FROM multa 
                         WHERE id_emprestimo = {inadimplente[0]}"""
-                
-                else:
-                    query = f"""INSERT INTO multa (id_emprestimo, valor) 
-                        VALUES ({inadimplente[0]}, 5)"""
-                
-                cursor.execute(query)
-                connection.commit()
+                    
+                    cursor.execute(query)
+                    multa = cursor.fetchone()
+
+                    if multa:
+                        query = f"""UPDATE multa SET valor = valor + 5 
+                            WHERE id_emprestimo = {inadimplente[0]}"""
+                    
+                    else:
+                        query = f"""INSERT INTO multa (id_emprestimo, valor, data_validade) 
+                            VALUES ({inadimplente[0]}, 5, '{inadimplente[1]}')"""
+                    
+                    cursor.execute(query)
+                    connection.commit()
+                return 'Empréstimos multados com sucessos'
+
     
         except Exception as exc:
             connection.rollback()
             print(f'Erro ao executar a consulta: {exc}')
 
-    def devolucao(self, id: int, valor: float) -> None:
+    def devolucao(self, id: int) -> None:
         """Realiza a devolução do livro, e atualiza o status do empréstimo.
         Se o usuário estiver multado, o valor da multa é 
         descontado do valor a ser pago."""
@@ -158,11 +164,7 @@ class Base():
             multa = cursor.fetchone()
             
             if multa:
-                if not valor:
-                    print('Valor da multa não informado')
-                    return
-
-                query = f"""UPDATE multa SET valor = valor - {valor} 
+                query = f"""UPDATE multa SET valor = 0
                     WHERE id_emprestimo = {id}"""
             
                 cursor.execute(query)
@@ -175,10 +177,13 @@ class Base():
 
             cursor.execute(query)
             connection.commit()
-    
+
+            return True
         except Exception as exc:
             connection.rollback()
             print(f'Erro ao executar a consulta: {exc}')
+            return False
+
 
 class Livro(Base):
     def __init__(self, titulo, idAutor, idEditora, categoria, isbn, dataPublicacao, id):

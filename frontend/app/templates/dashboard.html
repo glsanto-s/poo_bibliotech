@@ -10,13 +10,26 @@
 
 
 {% block content %}
+
+{% if messages %}
+{% for message in messages %}
+<p class="message" hidden>{{message}}</p>
+<script>
+  const message = document.querySelector('.message')
+  window.addEventListener('load', () => {
+    if (message) alert(message.innerText)
+  })
+</script>
+{% endfor %}
+{% endif %}
+
 <section class="dashboard">
   <ul class="categorias">
+    <li class="btnEmprestimos ativo">Empréstimos</li>
+    <li class="btnMultas">Multas</li>
     <li class="btnLivros ">Livros</li>
     <li class="btnEditoras">Editoras</li>
     <li class="btnAutores">Autores</li>
-    <li class="btnEmprestimos ativo">Empréstimos</li>
-    <li class="btnMultas">Multas</li>
   </ul>
 
   <section class="livros  container">
@@ -55,9 +68,17 @@
     </div>
   </section>
 
-  <section class="emprestimos ativo container ">
+  <section class="emprestimos ativo container">
     <div class="total">
       <p>Empréstimos</p>
+    </div>
+    <div class="multar_informacoes">
+      <ul>
+        <li class="dentro_validade">Em andamento - Dentro da validade</li>
+        <li class="fora_validade">Em andamento - Fora da validade</li>
+        <li class="devolvido">Devolvido</li>
+      </ul>
+      <a href="{% url 'multar'  %}" class="btnMultar">Multar empréstimos vencidos</a>
     </div>
     <div class="todosEmprestimos">
       {% for emprestimo in emprestimos %}
@@ -66,18 +87,47 @@
           <p>Cliente: {{emprestimo.5}}</p>
           <p>Livro: {{emprestimo.6}}</p>
         </div>
-        <div class="emprestimoData">
+        <div class="emprestimoData" data-status={{emprestimo.4}}>
           <p>Data de validade: <span>{{emprestimo.1}}</span></p>
           <p>Data do empréstimo: {{emprestimo.2}}</p>
           {% if emprestimo.4 == '1' %}
-          <a href="#" class="btnDevolver">Devolver</a>
-          {% else %}
+          <a href="{% url 'devolucao' emprestimo.0 %}" class="btnDevolver">Devolver</a>
+          {% elif emprestimo.3 is not None %}
           <p>Data da devolução: {{emprestimo.3}}</p>
           {% endif %}
         </div>
       </div>
       {% endfor %}
     </div>
+  </section>
+
+  <section class="multas container">
+    <div class="total">
+      <p>Multas</p>
+    </div>
+    <ul class="multas_ativa_inativa">
+      <li class="multa_ativa">Multa Ativa</li>
+      <li class="multa_inativa">Multa Inativa</li>
+    </ul>
+    <div class="todasMultas">
+      {% for multa in multas %}
+      <div class="multasContent">
+        <div class="multasDados">
+          <p>Cliente: {{multa.0}}</p>
+          <p>Telefone: {{multa.1}}</p>
+          <p>Email: {{multa.2}}</p>
+        </div>
+        <div class="multasValor">
+          <p>Valor: R$ <span>{{multa.3}}</span>,00</p>
+          <p>Data de validade: {{multa.4}}</p>
+        </div>
+      </div>
+
+      {% endfor %}
+
+    </div>
+
+
   </section>
 </section>
 

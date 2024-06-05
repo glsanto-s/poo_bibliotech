@@ -38,7 +38,8 @@
 .livros,
 .autores,
 .editoras,
-.emprestimos {
+.emprestimos,
+.multas {
   display: none;
   padding: 2rem;
   gap: 1rem;
@@ -49,7 +50,8 @@
 .livros.ativo,
 .autores.ativo,
 .editoras.ativo,
-.emprestimos.ativo {
+.emprestimos.ativo,
+.multas.ativo {
   display: grid;
 }
 
@@ -110,12 +112,14 @@
   font-size: 1.2rem;
 }
 
-.todosEmprestimos {
+.todosEmprestimos,
+.todasMultas {
   display: grid;
   gap: 1rem;
 }
 
-.emprestimoContent {
+.emprestimoContent,
+.multasContent {
   background: #75a4c667;
   padding: 0.4rem 0.8rem;
   border-radius: 16px;
@@ -126,18 +130,33 @@
   justify-content: space-between;
 }
 
+.multasContent {
+  background: #ff5a56;
+}
+
+.multasContent.inativa {
+  background: #75a4c667;
+}
+
 .emprestimoContent.validade {
   background: #ff5a56;
 }
 
+.emprestimoContent.devolucao {
+  background: #87f955;
+}
+
 .emprestimoLivro,
-.emprestimoData {
+.emprestimoData,
+.multasDados,
+.multasValor {
   display: grid;
   gap: 0.5rem;
   align-self: start;
 }
 
-.btnDevolver {
+.btnDevolver,
+.btnMultar {
   display: block;
   padding: 0.5rem;
   cursor: pointer;
@@ -148,7 +167,66 @@
   border: 2px solid transparent;
 }
 
-.btnDevolver:hover {
+.btnDevolver:hover,
+.btnMultar:hover {
   box-shadow: 0 0 4px #000;
   border: 2px solid var(--cor-secundaria);
+}
+
+.multar_informacoes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.multar_informacoes ul,
+.multas_ativa_inativa {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.multas_ativa_inativa {
+  padding: 1rem 0;
+}
+
+.multar_informacoes li,
+.multas_ativa_inativa li {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.dentro_validade::before,
+.fora_validade::before,
+.devolvido::before,
+.multa_ativa::before,
+.multa_inativa::before {
+  content: '';
+  display: block;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  border: 1px solid #000;
+}
+
+.dentro_validade::before,
+.multa_inativa::before {
+  content: '';
+  background: #75a4c667;
+}
+
+.fora_validade::before,
+.multa_ativa::before {
+  content: '';
+  background: #ff5a56;
+}
+
+.devolvido::before {
+  content: '';
+  background: #87f955;
+}
+
+.multasValor {
+  align-self: end;
 }
